@@ -516,26 +516,171 @@ Lars Qvigstad Sørensen
 </section>
 <section id="downloading-bloomberg-data" class="slide level2">
 <h2>Downloading Bloomberg data</h2>
-<p>We download data to construct a value score and momentum for all stocks in MSCI World.</p>
+<ul>
+<li>We download data to construct a value score and momentum for all stocks in MSCI World.</li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Define fields we want to retrieve</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>my_fields <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"px_to_book_ratio"</span>, <span class="st">"best_pe_ratio"</span>, <span class="st">"last_close_trr_1yr"</span>, <span class="st">"last_close_trr_1mo"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># Download data from Bloomberg</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>df_blb_tmp <span class="ot">&lt;-</span> <span class="fu">bdp</span>(<span class="at">securities =</span> my_tickers, <span class="at">fields =</span> my_fields)</span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># Add ticker to data frame</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>df_blb <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ticker =</span> <span class="fu">rownames</span>(df_blb_tmp)) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-7"><a href="#cb2-7"></a>  <span class="fu">bind_cols</span>(df_blb_tmp) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-8"><a href="#cb2-8"></a>  <span class="fu">as_tibble</span>()</span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="co"># Join Bloomberg data with input data</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a>df <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(df_bm, df_blb, <span class="at">by =</span> <span class="st">"ticker"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2"></a>my_fields <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"best_pe_ratio"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3"></a>               <span class="st">"px_to_book_ratio"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4"></a>               <span class="st">"last_close_trr_1yr"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>               <span class="st">"last_close_trr_1mo"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># Download data from Bloomberg</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>df_blb_tmp <span class="ot">&lt;-</span> <span class="fu">bdp</span>(<span class="at">securities =</span> my_tickers, <span class="at">fields =</span> my_fields)</span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co"># Add ticker to data frame</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>df_blb <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ticker =</span> <span class="fu">rownames</span>(df_blb_tmp)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="fu">bind_cols</span>(df_blb_tmp) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-13"><a href="#cb2-13"></a>  <span class="fu">as_tibble</span>()</span>
+<span id="cb2-14"><a href="#cb2-14"></a></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co"># Join Bloomberg data with input data</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>df <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(df_bm, df_blb, <span class="at">by =</span> <span class="st">"ticker"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="bloomberg-data-added-to-input-data" class="slide level2">
+<h2>Bloomberg data added to input data</h2>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table table-striped" style="font-size: 12px; width: auto !important; ">
+<caption style="font-size: initial !important;">MSCI World with Bloomberg data</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> name </th>
+   <th style="text-align:left;"> ticker </th>
+   <th style="text-align:right;"> weight </th>
+   <th style="text-align:left;"> sector </th>
+   <th style="text-align:left;"> region </th>
+   <th style="text-align:right;"> px_to_book_ratio </th>
+   <th style="text-align:right;"> best_pe_ratio </th>
+   <th style="text-align:right;"> last_close_trr_1yr </th>
+   <th style="text-align:right;"> last_close_trr_1mo </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Apple Inc. </td>
+   <td style="text-align:left;"> AAPL US Equity </td>
+   <td style="text-align:right;"> 0.0422295 </td>
+   <td style="text-align:left;"> IT </td>
+   <td style="text-align:left;"> NAM </td>
+   <td style="text-align:right;"> 43.379380 </td>
+   <td style="text-align:right;"> 22.56096 </td>
+   <td style="text-align:right;"> -15.7071200 </td>
+   <td style="text-align:right;"> 4.2101280 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Microsoft Corporation </td>
+   <td style="text-align:left;"> MSFT US Equity </td>
+   <td style="text-align:right;"> 0.0319209 </td>
+   <td style="text-align:left;"> IT </td>
+   <td style="text-align:left;"> NAM </td>
+   <td style="text-align:right;"> 10.320688 </td>
+   <td style="text-align:right;"> 24.53227 </td>
+   <td style="text-align:right;"> -19.5959900 </td>
+   <td style="text-align:right;"> -0.6534326 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Amazon.Com, Inc. </td>
+   <td style="text-align:left;"> AMZN US Equity </td>
+   <td style="text-align:right;"> 0.0166854 </td>
+   <td style="text-align:left;"> Cons. Discret. </td>
+   <td style="text-align:left;"> NAM </td>
+   <td style="text-align:right;"> 7.213344 </td>
+   <td style="text-align:right;"> 35.95194 </td>
+   <td style="text-align:right;"> -35.8794700 </td>
+   <td style="text-align:right;"> 14.1565900 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Alphabet Inc. Class A </td>
+   <td style="text-align:left;"> GOOGL US Equity </td>
+   <td style="text-align:right;"> 0.0108382 </td>
+   <td style="text-align:left;"> Communication Services </td>
+   <td style="text-align:left;"> NAM </td>
+   <td style="text-align:right;"> 5.012962 </td>
+   <td style="text-align:right;"> 17.68676 </td>
+   <td style="text-align:right;"> -26.4707500 </td>
+   <td style="text-align:right;"> 10.1100900 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Alphabet Inc. Class C </td>
+   <td style="text-align:left;"> GOOG US Equity </td>
+   <td style="text-align:right;"> 0.0101187 </td>
+   <td style="text-align:left;"> Communication Services </td>
+   <td style="text-align:left;"> NAM </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 17.91411 </td>
+   <td style="text-align:right;"> -25.6365800 </td>
+   <td style="text-align:right;"> 10.7664800 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Exxon Mobil Corporation </td>
+   <td style="text-align:left;"> XOM US Equity </td>
+   <td style="text-align:right;"> 0.0090124 </td>
+   <td style="text-align:left;"> Energy </td>
+   <td style="text-align:left;"> NAM </td>
+   <td style="text-align:right;"> 2.508196 </td>
+   <td style="text-align:right;"> 10.03808 </td>
+   <td style="text-align:right;"> 60.7926800 </td>
+   <td style="text-align:right;"> 6.2423840 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> UnitedHealth Group Incorporated </td>
+   <td style="text-align:left;"> UNH US Equity </td>
+   <td style="text-align:right;"> 0.0088011 </td>
+   <td style="text-align:left;"> Health Care </td>
+   <td style="text-align:left;"> NAM </td>
+   <td style="text-align:right;"> 5.583381 </td>
+   <td style="text-align:right;"> 19.60604 </td>
+   <td style="text-align:right;"> 6.4799050 </td>
+   <td style="text-align:right;"> -6.4377850 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Johnson &amp; Johnson </td>
+   <td style="text-align:left;"> JNJ US Equity </td>
+   <td style="text-align:right;"> 0.0086585 </td>
+   <td style="text-align:left;"> Health Care </td>
+   <td style="text-align:left;"> NAM </td>
+   <td style="text-align:right;"> 5.919284 </td>
+   <td style="text-align:right;"> 16.83696 </td>
+   <td style="text-align:right;"> 4.7876800 </td>
+   <td style="text-align:right;"> -3.9448970 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> NVIDIA Corporation </td>
+   <td style="text-align:left;"> NVDA US Equity </td>
+   <td style="text-align:right;"> 0.0081093 </td>
+   <td style="text-align:left;"> IT </td>
+   <td style="text-align:left;"> NAM </td>
+   <td style="text-align:right;"> 20.622349 </td>
+   <td style="text-align:right;"> 46.28697 </td>
+   <td style="text-align:right;"> -26.0654300 </td>
+   <td style="text-align:right;"> 10.9045700 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Berkshire Hathaway Inc. Class B </td>
+   <td style="text-align:left;"> BRK/B US Equity </td>
+   <td style="text-align:right;"> 0.0077148 </td>
+   <td style="text-align:left;"> Financials </td>
+   <td style="text-align:left;"> NAM </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 20.20013 </td>
+   <td style="text-align:right;"> -0.3665477 </td>
+   <td style="text-align:right;"> 2.6059600 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
 </div>
 </section>
 <section id="distribution-value-metrics" class="slide level2">
 <h2>Distribution value metrics</h2>
 
-<img data-src="value_score_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
-<section id="construct-a-combined-value-score-from-pe-and-pb" class="slide level2 smaller">
-<h2>Construct a combined value score from PE and PB</h2>
+<img data-src="value_score_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="construct-combined-value-score" class="slide level2 smaller">
+<h2>Construct combined value score</h2>
 <ul>
 <li>Want to compute a value score based on both Price/Book and Price/Earnings.</li>
 <li>Scale for Price/Book and Price/Earnings are different.</li>
@@ -546,6 +691,10 @@ Z_{pb} &amp;= \frac{x_{pb} - \mu_{pb}}{\sigma_{pb}}
 \end{align}
 \]</span></li>
 </ul>
+<p>Can compute weighed sum of z-scores to create composite value metric</p>
+<p><span class="math display">\[
+\text{Value} = w \times Z_{pe} + (1-w) \times Z_{pb}
+\]</span></p>
 </section>
 <section id="computing-momentum" class="slide level2">
 <h2>Computing momentum</h2>
@@ -556,8 +705,387 @@ M = \frac{P_{t-1}}{P_{t-12}} = \frac{P_{t-1}}{P_{t}} \times \frac{P_{t}}{P_{t-12
 <p>Hence, we can compute momentum based on last 12 month return and last 1 month return.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">mutate</span>(<span class="at">mom =</span> (<span class="dv">1</span> <span class="sc">+</span> (last_close_trr_1yr<span class="sc">/</span><span class="dv">100</span>)) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> (last_close_trr_1mo<span class="sc">/</span><span class="dv">100</span>)) <span class="sc">-</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">mutate</span>(<span class="at">mom =</span> (<span class="dv">1</span> <span class="sc">+</span> (last_close_trr_1yr<span class="sc">/</span><span class="dv">100</span>))</span>
+<span id="cb3-3"><a href="#cb3-3"></a>         <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> (last_close_trr_1mo<span class="sc">/</span><span class="dv">100</span>)) <span class="sc">-</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="creating-rank-scores" class="slide level2">
+<h2>Creating rank scores</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>df_scores <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">mutate</span>(<span class="at">z_pe =</span> <span class="fu">scale</span>(<span class="sc">-</span>best_pe_ratio, <span class="at">center =</span> T, <span class="at">scale =</span> T)[,<span class="dv">1</span>],</span>
+<span id="cb4-4"><a href="#cb4-4"></a>         <span class="at">z_pb =</span>  <span class="fu">scale</span>(<span class="sc">-</span>px_to_book_ratio, <span class="at">center =</span> T, <span class="at">scale =</span> T)[,<span class="dv">1</span>],</span>
+<span id="cb4-5"><a href="#cb4-5"></a>         <span class="at">z_value =</span><span class="fu">scale</span>(z_pe <span class="sc">+</span> z_pb, <span class="at">center =</span> T, <span class="at">scale =</span> T)[,<span class="dv">1</span>],</span>
+<span id="cb4-6"><a href="#cb4-6"></a>         <span class="at">z_mom =</span> <span class="fu">scale</span>(mom, <span class="at">center =</span> T, <span class="at">scale =</span> T)[,<span class="dv">1</span>],</span>
+<span id="cb4-7"><a href="#cb4-7"></a>         <span class="at">value =</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">percent_rank</span>(z_pe <span class="sc">+</span> z_pb),</span>
+<span id="cb4-8"><a href="#cb4-8"></a>         <span class="at">momentum =</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">percent_rank</span>(z_mom)</span>
+<span id="cb4-9"><a href="#cb4-9"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="cheapest-and-most-expensive" class="slide level2 smaller">
+<h2>Cheapest and most expensive</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Cheapest</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>df_scores <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">select</span>(name, value, px_to_book_ratio, best_pe_ratio) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">slice_max</span>(value, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Cheapest companies in MSCI World"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="st">"striped"</span>, <span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">"left"</span>, <span class="at">font_size =</span> my_font_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table class="table table-striped" style="font-size: 12px; width: auto !important; ">
+<caption style="font-size: initial !important;">Cheapest companies in MSCI World</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> name </th>
+   <th style="text-align:right;"> value </th>
+   <th style="text-align:right;"> px_to_book_ratio </th>
+   <th style="text-align:right;"> best_pe_ratio </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Mazda Motor Corp. </td>
+   <td style="text-align:right;"> 100.00000 </td>
+   <td style="text-align:right;"> 0.4318299 </td>
+   <td style="text-align:right;"> 3.593814 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Volkswagen AG Pref </td>
+   <td style="text-align:right;"> 99.90934 </td>
+   <td style="text-align:right;"> 0.3869248 </td>
+   <td style="text-align:right;"> 4.478979 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Societe Generale S.A. Class A </td>
+   <td style="text-align:right;"> 99.81868 </td>
+   <td style="text-align:right;"> 0.3043693 </td>
+   <td style="text-align:right;"> 5.165341 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nippon Steel &amp; Sumitomo Metal Corp. </td>
+   <td style="text-align:right;"> 99.72801 </td>
+   <td style="text-align:right;"> 0.6264589 </td>
+   <td style="text-align:right;"> 3.513515 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nissan Motor Co., Ltd. </td>
+   <td style="text-align:right;"> 99.63735 </td>
+   <td style="text-align:right;"> 0.3327870 </td>
+   <td style="text-align:right;"> 5.311196 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> INPEX Corp. </td>
+   <td style="text-align:right;"> 99.54669 </td>
+   <td style="text-align:right;"> 0.4968606 </td>
+   <td style="text-align:right;"> 4.617925 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Viatris, Inc. </td>
+   <td style="text-align:right;"> 99.45603 </td>
+   <td style="text-align:right;"> 0.7333209 </td>
+   <td style="text-align:right;"> 3.643216 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Barclays Plc </td>
+   <td style="text-align:right;"> 99.36537 </td>
+   <td style="text-align:right;"> 0.5311564 </td>
+   <td style="text-align:right;"> 5.381437 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Volkswagen Ag </td>
+   <td style="text-align:right;"> 99.27471 </td>
+   <td style="text-align:right;"> 0.4974391 </td>
+   <td style="text-align:right;"> 5.758275 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Honda Motor Co., Ltd. </td>
+   <td style="text-align:right;"> 99.18404 </td>
+   <td style="text-align:right;"> 0.4538799 </td>
+   <td style="text-align:right;"> 6.106952 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Most expensive</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>df_scores <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">select</span>(name, value, px_to_book_ratio, best_pe_ratio) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">slice_min</span>(value, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Most expensive companies in MSCI World"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="st">"striped"</span>, <span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">"left"</span>, <span class="at">font_size =</span> my_font_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table class="table table-striped" style="font-size: 12px; width: auto !important; ">
+<caption style="font-size: initial !important;">Most expensive companies in MSCI World</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> name </th>
+   <th style="text-align:right;"> value </th>
+   <th style="text-align:right;"> px_to_book_ratio </th>
+   <th style="text-align:right;"> best_pe_ratio </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Vestas Wind Systems A/S </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+   <td style="text-align:right;"> 7.426209 </td>
+   <td style="text-align:right;"> 3414.90167 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Dollarama Inc. </td>
+   <td style="text-align:right;"> 0.0906618 </td>
+   <td style="text-align:right;"> 581.478570 </td>
+   <td style="text-align:right;"> 27.34282 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Home Depot, Inc. </td>
+   <td style="text-align:right;"> 0.1813237 </td>
+   <td style="text-align:right;"> 247.534669 </td>
+   <td style="text-align:right;"> 18.81608 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Uber Technologies, Inc. </td>
+   <td style="text-align:right;"> 0.2719855 </td>
+   <td style="text-align:right;"> 9.473545 </td>
+   <td style="text-align:right;"> 607.20000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Chewy, Inc. </td>
+   <td style="text-align:right;"> 0.3626473 </td>
+   <td style="text-align:right;"> 106.654396 </td>
+   <td style="text-align:right;"> 94.14579 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Insulet Corp. </td>
+   <td style="text-align:right;"> 0.4533092 </td>
+   <td style="text-align:right;"> 47.743655 </td>
+   <td style="text-align:right;"> 360.23256 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> MongoDB, Inc. </td>
+   <td style="text-align:right;"> 0.5439710 </td>
+   <td style="text-align:right;"> 20.025264 </td>
+   <td style="text-align:right;"> 461.21212 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Colgate-Palmolive Company </td>
+   <td style="text-align:right;"> 0.6346328 </td>
+   <td style="text-align:right;"> 101.299939 </td>
+   <td style="text-align:right;"> 24.63749 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ventas, Inc. </td>
+   <td style="text-align:right;"> 0.7252947 </td>
+   <td style="text-align:right;"> 1.901098 </td>
+   <td style="text-align:right;"> 535.65217 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> IDEXX Laboratories, Inc. </td>
+   <td style="text-align:right;"> 0.8159565 </td>
+   <td style="text-align:right;"> 85.240927 </td>
+   <td style="text-align:right;"> 53.19695 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="winners-and-losers" class="slide level2 smaller">
+<h2>Winners and losers</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Winners</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>df_scores <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">select</span>(name, momentum, last_close_trr_1yr, last_close_trr_1mo) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">slice_max</span>(momentum, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Highest momentum in MSCI World"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="st">"striped"</span>, <span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">"left"</span>, <span class="at">font_size =</span> my_font_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table class="table table-striped" style="font-size: 12px; width: auto !important; ">
+<caption style="font-size: initial !important;">Highest momentum in MSCI World</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> name </th>
+   <th style="text-align:right;"> momentum </th>
+   <th style="text-align:right;"> last_close_trr_1yr </th>
+   <th style="text-align:right;"> last_close_trr_1mo </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Texas Pacific Land Corp. </td>
+   <td style="text-align:right;"> 100.00000 </td>
+   <td style="text-align:right;"> 111.04170 </td>
+   <td style="text-align:right;"> -17.022300 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Enphase Energy, Inc. </td>
+   <td style="text-align:right;"> 99.90934 </td>
+   <td style="text-align:right;"> 65.22385 </td>
+   <td style="text-align:right;"> -26.328330 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Rheinmetall Ag </td>
+   <td style="text-align:right;"> 99.81868 </td>
+   <td style="text-align:right;"> 144.68490 </td>
+   <td style="text-align:right;"> 24.416020 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Constellation Energy </td>
+   <td style="text-align:right;"> 99.72801 </td>
+   <td style="text-align:right;"> 86.11912 </td>
+   <td style="text-align:right;"> -5.207858 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> First Solar, Inc. </td>
+   <td style="text-align:right;"> 99.63735 </td>
+   <td style="text-align:right;"> 106.00070 </td>
+   <td style="text-align:right;"> 7.203525 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Steel Dynamics, Inc. </td>
+   <td style="text-align:right;"> 99.54669 </td>
+   <td style="text-align:right;"> 92.96611 </td>
+   <td style="text-align:right;"> 5.032172 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Occidental Petroleum Corporation </td>
+   <td style="text-align:right;"> 99.45603 </td>
+   <td style="text-align:right;"> 93.04145 </td>
+   <td style="text-align:right;"> 7.279140 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> EQT Corporation </td>
+   <td style="text-align:right;"> 99.36537 </td>
+   <td style="text-align:right;"> 63.32049 </td>
+   <td style="text-align:right;"> -6.059768 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Tourmaline Oil Corp. </td>
+   <td style="text-align:right;"> 99.27471 </td>
+   <td style="text-align:right;"> 64.57170 </td>
+   <td style="text-align:right;"> -3.052141 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Daiichi Sankyo Co., Ltd. </td>
+   <td style="text-align:right;"> 99.18404 </td>
+   <td style="text-align:right;"> 62.72910 </td>
+   <td style="text-align:right;"> -2.524902 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Losers</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>df_scores <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">select</span>(name, momentum, last_close_trr_1yr, last_close_trr_1mo) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">slice_min</span>(momentum, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Lowest momentum in MSCI World"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="st">"striped"</span>, <span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">"left"</span>, <span class="at">font_size =</span> my_font_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table class="table table-striped" style="font-size: 12px; width: auto !important; ">
+<caption style="font-size: initial !important;">Lowest momentum in MSCI World</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> name </th>
+   <th style="text-align:right;"> momentum </th>
+   <th style="text-align:right;"> last_close_trr_1yr </th>
+   <th style="text-align:right;"> last_close_trr_1mo </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Snap, Inc. </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+   <td style="text-align:right;"> -71.44898 </td>
+   <td style="text-align:right;"> 21.680880 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Unity Software, Inc. </td>
+   <td style="text-align:right;"> 0.0906618 </td>
+   <td style="text-align:right;"> -72.42867 </td>
+   <td style="text-align:right;"> 12.910210 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Generac Holdings, Inc. </td>
+   <td style="text-align:right;"> 0.1813237 </td>
+   <td style="text-align:right;"> -61.81409 </td>
+   <td style="text-align:right;"> 19.311560 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SVB Financial Group </td>
+   <td style="text-align:right;"> 0.2719855 </td>
+   <td style="text-align:right;"> -55.02053 </td>
+   <td style="text-align:right;"> 37.174060 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Okta, Inc. </td>
+   <td style="text-align:right;"> 0.3626473 </td>
+   <td style="text-align:right;"> -65.70487 </td>
+   <td style="text-align:right;"> 3.666818 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Signature Bank (New York, New York) </td>
+   <td style="text-align:right;"> 0.4533092 </td>
+   <td style="text-align:right;"> -62.00592 </td>
+   <td style="text-align:right;"> 12.175210 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> HelloFresh SE </td>
+   <td style="text-align:right;"> 0.5439710 </td>
+   <td style="text-align:right;"> -60.56218 </td>
+   <td style="text-align:right;"> 9.924026 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Facebook, Inc. Class A </td>
+   <td style="text-align:right;"> 0.6346328 </td>
+   <td style="text-align:right;"> -55.97359 </td>
+   <td style="text-align:right;"> 19.028100 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> V.F. Corporation </td>
+   <td style="text-align:right;"> 0.7252947 </td>
+   <td style="text-align:right;"> -53.75602 </td>
+   <td style="text-align:right;"> 16.567340 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PayPal Holdings, Inc. </td>
+   <td style="text-align:right;"> 0.8159565 </td>
+   <td style="text-align:right;"> -54.35711 </td>
+   <td style="text-align:right;"> 15.023270 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="momentum-distribution" class="slide level2">
+<h2>Momentum distribution</h2>
+
+<img data-src="value_score_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"><ul>
+<li>Rank distribution is uniform</li>
+<li>Z-score distribution preserves distance</li>
+</ul>
 <div class="footer footer-default">
 
 </div>
