@@ -5,9 +5,10 @@
 <script src="value_score_files/libs/quarto-html/popper.min.js"></script>
 <script src="value_score_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="value_score_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="value_score_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="value_score_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="value_score_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.269">
+  <meta name="generator" content="quarto-1.3.450">
 
   <meta name="author" content="Lars Qvigstad Sørensen">
   <title>Constructing value and momentum scores</title>
@@ -25,9 +26,10 @@
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
       width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -93,7 +95,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="value_score_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link rel="stylesheet" href="value_score_files/libs/revealjs/dist/theme/quarto.css">
   <link href="value_score_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="value_score_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="value_score_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -136,44 +138,44 @@
     font-weight: 400;
   }
 
-  .callout.callout-captioned.callout-style-simple .callout-body {
+  .callout.callout-titled.callout-style-simple .callout-body {
     margin-top: 0.2em;
   }
 
-  .callout:not(.callout-captioned) .callout-body {
+  .callout:not(.callout-titled) .callout-body {
       display: flex;
   }
 
-  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
     padding-left: 1.6em;
   }
 
-  .callout.callout-captioned .callout-header {
+  .callout.callout-titled .callout-header {
     padding-top: 0.2em;
     margin-bottom: -0.2em;
   }
 
-  .callout.callout-captioned .callout-caption  p {
+  .callout.callout-titled .callout-title  p {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
   }
     
-  .callout.callout-captioned.callout-style-simple .callout-content  p {
+  .callout.callout-titled.callout-style-simple .callout-content  p {
     margin-top: 0;
   }
 
-  .callout.callout-captioned.callout-style-default .callout-content  p {
+  .callout.callout-titled.callout-style-default .callout-content  p {
     margin-top: 0.7em;
   }
 
-  .callout.callout-style-simple div.callout-caption {
+  .callout.callout-style-simple div.callout-title {
     border-bottom: none;
     font-size: .9rem;
     font-weight: 600;
     opacity: 75%;
   }
 
-  .callout.callout-style-default  div.callout-caption {
+  .callout.callout-style-default  div.callout-title {
     border-bottom: none;
     font-weight: 600;
     opacity: 85%;
@@ -205,7 +207,7 @@
     background-size: 0.9rem 0.9rem;
   }
 
-  .callout-caption {
+  .callout-title {
     display: flex
   }
     
@@ -218,16 +220,16 @@
     display: none !important;
   }
 
-  .callout.callout-captioned .callout-body > .callout-content > :last-child {
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
     margin-bottom: 0.5rem;
   }
 
-  .callout.callout-captioned .callout-icon::before {
+  .callout.callout-titled .callout-icon::before {
     margin-top: .5rem;
     padding-right: .5rem;
   }
 
-  .callout:not(.callout-captioned) .callout-icon::before {
+  .callout:not(.callout-titled) .callout-icon::before {
     margin-top: 1rem;
     padding-right: .5rem;
   }
@@ -242,7 +244,7 @@
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
   }
 
-  div.callout-note.callout-style-default .callout-caption {
+  div.callout-note.callout-style-default .callout-title {
     background-color: #dae6fb
   }
 
@@ -254,7 +256,7 @@
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
   }
 
-  div.callout-important.callout-style-default .callout-caption {
+  div.callout-important.callout-style-default .callout-title {
     background-color: #f7dddc
   }
 
@@ -266,7 +268,7 @@
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
   }
 
-  div.callout-warning.callout-style-default .callout-caption {
+  div.callout-warning.callout-style-default .callout-title {
     background-color: #fcefdc
   }
 
@@ -278,7 +280,7 @@
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
   }
 
-  div.callout-tip.callout-style-default .callout-caption {
+  div.callout-tip.callout-style-default .callout-title {
     background-color: #ccf1e3
   }
 
@@ -290,7 +292,7 @@
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
   }
 
-  div.callout-caution.callout-style-default .callout-caption {
+  div.callout-caution.callout-style-default .callout-title {
     background-color: #ffe5d0
   }
 
@@ -382,9 +384,6 @@
       margin-right: 0; 
     }
   </style>
-  
-  <script src="value_score_files/libs/kePrint-0.0.1/kePrint.js"></script>
-  <link href="value_score_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -407,108 +406,526 @@ Lars Qvigstad Sørensen
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(kableExtra)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(Rblpapi)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>con <span class="ot">&lt;-</span> <span class="fu">blpConnect</span>()</span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(Rblpapi)</span>
-<span id="cb1-6"><a href="#cb1-6"></a>con <span class="ot">&lt;-</span> <span class="fu">blpConnect</span>()</span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a>df_bm <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"msci.txt"</span>)</span>
-<span id="cb1-9"><a href="#cb1-9"></a>my_tickers <span class="ot">&lt;-</span> df_bm<span class="sc">$</span>ticker</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4"></a>df_bm <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"msci.txt"</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">weight =</span> weight <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>my_tickers <span class="ot">&lt;-</span> df_bm<span class="sc">$</span>ticker</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 
-<table class="table table-striped" style="font-size: 12px; width: auto !important; ">
-<caption style="font-size: initial !important;">Sample data from MSCI World</caption>
- <thead>
-  <tr>
-   <th style="text-align:left;"> name </th>
-   <th style="text-align:left;"> ticker </th>
-   <th style="text-align:right;"> weight </th>
-   <th style="text-align:left;"> sector </th>
-   <th style="text-align:left;"> region </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> Apple Inc. </td>
-   <td style="text-align:left;"> AAPL US Equity </td>
-   <td style="text-align:right;"> 0.0422295 </td>
-   <td style="text-align:left;"> IT </td>
-   <td style="text-align:left;"> NAM </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Microsoft Corporation </td>
-   <td style="text-align:left;"> MSFT US Equity </td>
-   <td style="text-align:right;"> 0.0319209 </td>
-   <td style="text-align:left;"> IT </td>
-   <td style="text-align:left;"> NAM </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Amazon.Com, Inc. </td>
-   <td style="text-align:left;"> AMZN US Equity </td>
-   <td style="text-align:right;"> 0.0166854 </td>
-   <td style="text-align:left;"> Cons. Discret. </td>
-   <td style="text-align:left;"> NAM </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Alphabet Inc. Class A </td>
-   <td style="text-align:left;"> GOOGL US Equity </td>
-   <td style="text-align:right;"> 0.0108382 </td>
-   <td style="text-align:left;"> Communication Services </td>
-   <td style="text-align:left;"> NAM </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Alphabet Inc. Class C </td>
-   <td style="text-align:left;"> GOOG US Equity </td>
-   <td style="text-align:right;"> 0.0101187 </td>
-   <td style="text-align:left;"> Communication Services </td>
-   <td style="text-align:left;"> NAM </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Exxon Mobil Corporation </td>
-   <td style="text-align:left;"> XOM US Equity </td>
-   <td style="text-align:right;"> 0.0090124 </td>
-   <td style="text-align:left;"> Energy </td>
-   <td style="text-align:left;"> NAM </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> UnitedHealth Group Incorporated </td>
-   <td style="text-align:left;"> UNH US Equity </td>
-   <td style="text-align:right;"> 0.0088011 </td>
-   <td style="text-align:left;"> Health Care </td>
-   <td style="text-align:left;"> NAM </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Johnson &amp; Johnson </td>
-   <td style="text-align:left;"> JNJ US Equity </td>
-   <td style="text-align:right;"> 0.0086585 </td>
-   <td style="text-align:left;"> Health Care </td>
-   <td style="text-align:left;"> NAM </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> NVIDIA Corporation </td>
-   <td style="text-align:left;"> NVDA US Equity </td>
-   <td style="text-align:right;"> 0.0081093 </td>
-   <td style="text-align:left;"> IT </td>
-   <td style="text-align:left;"> NAM </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Berkshire Hathaway Inc. Class B </td>
-   <td style="text-align:left;"> BRK/B US Equity </td>
-   <td style="text-align:right;"> 0.0077148 </td>
-   <td style="text-align:left;"> Financials </td>
-   <td style="text-align:left;"> NAM </td>
-  </tr>
-</tbody>
-</table>
+<div id="rxqghwvkji" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rxqghwvkji table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
+#rxqghwvkji thead, #rxqghwvkji tbody, #rxqghwvkji tfoot, #rxqghwvkji tr, #rxqghwvkji td, #rxqghwvkji th {
+  border-style: none;
+}
+
+#rxqghwvkji p {
+  margin: 0;
+  padding: 0;
+}
+
+#rxqghwvkji .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#rxqghwvkji .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#rxqghwvkji .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rxqghwvkji .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rxqghwvkji .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rxqghwvkji .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rxqghwvkji .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rxqghwvkji .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#rxqghwvkji .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#rxqghwvkji .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#rxqghwvkji .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#rxqghwvkji .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#rxqghwvkji .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#rxqghwvkji .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#rxqghwvkji .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rxqghwvkji .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#rxqghwvkji .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#rxqghwvkji .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#rxqghwvkji .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rxqghwvkji .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#rxqghwvkji .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#rxqghwvkji .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#rxqghwvkji .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rxqghwvkji .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#rxqghwvkji .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#rxqghwvkji .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rxqghwvkji .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rxqghwvkji .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#rxqghwvkji .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rxqghwvkji .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#rxqghwvkji .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rxqghwvkji .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rxqghwvkji .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rxqghwvkji .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rxqghwvkji .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rxqghwvkji .gt_left {
+  text-align: left;
+}
+
+#rxqghwvkji .gt_center {
+  text-align: center;
+}
+
+#rxqghwvkji .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rxqghwvkji .gt_font_normal {
+  font-weight: normal;
+}
+
+#rxqghwvkji .gt_font_bold {
+  font-weight: bold;
+}
+
+#rxqghwvkji .gt_font_italic {
+  font-style: italic;
+}
+
+#rxqghwvkji .gt_super {
+  font-size: 65%;
+}
+
+#rxqghwvkji .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#rxqghwvkji .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#rxqghwvkji .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#rxqghwvkji .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#rxqghwvkji .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#rxqghwvkji .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#rxqghwvkji .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="5" class="gt_heading gt_title gt_font_normal gt_bottom_border" style=""><strong>MSCI World sample data</strong></td>
+    </tr>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="ticker">ticker</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="weight">weight</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="sector">sector</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Region">Region</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub">Apple Inc.</th>
+<td headers="stub_1_1 ticker" class="gt_row gt_left">AAPL US Equity</td>
+<td headers="stub_1_1 weight" class="gt_row gt_right">4.97</td>
+<td headers="stub_1_1 sector" class="gt_row gt_left">IT</td>
+<td headers="stub_1_1 Region" class="gt_row gt_left">NAM</td></tr>
+    <tr><th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub">Microsoft Corporation</th>
+<td headers="stub_1_2 ticker" class="gt_row gt_left gt_striped">MSFT US Equity</td>
+<td headers="stub_1_2 weight" class="gt_row gt_right gt_striped">4.68</td>
+<td headers="stub_1_2 sector" class="gt_row gt_left gt_striped">IT</td>
+<td headers="stub_1_2 Region" class="gt_row gt_left gt_striped">NAM</td></tr>
+    <tr><th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub">NVIDIA Corporation</th>
+<td headers="stub_1_3 ticker" class="gt_row gt_left">NVDA US Equity</td>
+<td headers="stub_1_3 weight" class="gt_row gt_right">2.49</td>
+<td headers="stub_1_3 sector" class="gt_row gt_left">IT</td>
+<td headers="stub_1_3 Region" class="gt_row gt_left">NAM</td></tr>
+    <tr><th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub">Amazon.Com, Inc.</th>
+<td headers="stub_1_4 ticker" class="gt_row gt_left gt_striped">AMZN US Equity</td>
+<td headers="stub_1_4 weight" class="gt_row gt_right gt_striped">2.40</td>
+<td headers="stub_1_4 sector" class="gt_row gt_left gt_striped">Cons. Discret.</td>
+<td headers="stub_1_4 Region" class="gt_row gt_left gt_striped">NAM</td></tr>
+    <tr><th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub">Alphabet Inc. Class A</th>
+<td headers="stub_1_5 ticker" class="gt_row gt_left">GOOGL US Equity</td>
+<td headers="stub_1_5 weight" class="gt_row gt_right">1.48</td>
+<td headers="stub_1_5 sector" class="gt_row gt_left">Communication Services</td>
+<td headers="stub_1_5 Region" class="gt_row gt_left">NAM</td></tr>
+    <tr><th id="stub_1_6" scope="row" class="gt_row gt_left gt_stub">Facebook, Inc. Class A</th>
+<td headers="stub_1_6 ticker" class="gt_row gt_left gt_striped">META US Equity</td>
+<td headers="stub_1_6 weight" class="gt_row gt_right gt_striped">1.43</td>
+<td headers="stub_1_6 sector" class="gt_row gt_left gt_striped">Communication Services</td>
+<td headers="stub_1_6 Region" class="gt_row gt_left gt_striped">NAM</td></tr>
+    <tr><th id="stub_1_7" scope="row" class="gt_row gt_left gt_stub">Alphabet Inc. Class C</th>
+<td headers="stub_1_7 ticker" class="gt_row gt_left">GOOG US Equity</td>
+<td headers="stub_1_7 weight" class="gt_row gt_right">1.31</td>
+<td headers="stub_1_7 sector" class="gt_row gt_left">Communication Services</td>
+<td headers="stub_1_7 Region" class="gt_row gt_left">NAM</td></tr>
+    <tr><th id="stub_1_8" scope="row" class="gt_row gt_left gt_stub">Broadcom, Inc.</th>
+<td headers="stub_1_8 ticker" class="gt_row gt_left gt_striped">AVGO US Equity</td>
+<td headers="stub_1_8 weight" class="gt_row gt_right gt_striped">0.89</td>
+<td headers="stub_1_8 sector" class="gt_row gt_left gt_striped">IT</td>
+<td headers="stub_1_8 Region" class="gt_row gt_left gt_striped">NAM</td></tr>
+    <tr><th id="stub_1_9" scope="row" class="gt_row gt_left gt_stub">Tesla, Inc.</th>
+<td headers="stub_1_9 ticker" class="gt_row gt_left">TSLA US Equity</td>
+<td headers="stub_1_9 weight" class="gt_row gt_right">0.85</td>
+<td headers="stub_1_9 sector" class="gt_row gt_left">Cons. Discret.</td>
+<td headers="stub_1_9 Region" class="gt_row gt_left">NAM</td></tr>
+    <tr><th id="stub_1_10" scope="row" class="gt_row gt_left gt_stub">Eli Lilly and Company</th>
+<td headers="stub_1_10 ticker" class="gt_row gt_left gt_striped">LLY US Equity</td>
+<td headers="stub_1_10 weight" class="gt_row gt_right gt_striped">0.83</td>
+<td headers="stub_1_10 sector" class="gt_row gt_left gt_striped">Health Care</td>
+<td headers="stub_1_10 Region" class="gt_row gt_left gt_striped">NAM</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -530,8 +947,8 @@ Lars Qvigstad Sørensen
 <span id="cb2-8"><a href="#cb2-8"></a>df_blb_tmp <span class="ot">&lt;-</span> <span class="fu">bdp</span>(<span class="at">securities =</span> my_tickers, <span class="at">fields =</span> my_fields)</span>
 <span id="cb2-9"><a href="#cb2-9"></a></span>
 <span id="cb2-10"><a href="#cb2-10"></a><span class="co"># Add ticker to data frame</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a>df_blb <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ticker =</span> <span class="fu">rownames</span>(df_blb_tmp)) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-12"><a href="#cb2-12"></a>  <span class="fu">bind_cols</span>(df_blb_tmp) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-11"><a href="#cb2-11"></a>df_blb <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ticker =</span> <span class="fu">rownames</span>(df_blb_tmp)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="fu">bind_cols</span>(df_blb_tmp) <span class="sc">|&gt;</span> </span>
 <span id="cb2-13"><a href="#cb2-13"></a>  <span class="fu">as_tibble</span>()</span>
 <span id="cb2-14"><a href="#cb2-14"></a></span>
 <span id="cb2-15"><a href="#cb2-15"></a><span class="co"># Join Bloomberg data with input data</span></span>
@@ -543,135 +960,560 @@ Lars Qvigstad Sørensen
 <div class="cell">
 <div class="cell-output-display">
 
-<table class="table table-striped" style="font-size: 12px; width: auto !important; ">
-<caption style="font-size: initial !important;">MSCI World with Bloomberg data</caption>
- <thead>
-  <tr>
-   <th style="text-align:left;"> name </th>
-   <th style="text-align:left;"> ticker </th>
-   <th style="text-align:right;"> weight </th>
-   <th style="text-align:left;"> sector </th>
-   <th style="text-align:left;"> region </th>
-   <th style="text-align:right;"> px_to_book_ratio </th>
-   <th style="text-align:right;"> best_pe_ratio </th>
-   <th style="text-align:right;"> last_close_trr_1yr </th>
-   <th style="text-align:right;"> last_close_trr_1mo </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> Apple Inc. </td>
-   <td style="text-align:left;"> AAPL US Equity </td>
-   <td style="text-align:right;"> 0.0422295 </td>
-   <td style="text-align:left;"> IT </td>
-   <td style="text-align:left;"> NAM </td>
-   <td style="text-align:right;"> 43.379380 </td>
-   <td style="text-align:right;"> 22.56096 </td>
-   <td style="text-align:right;"> -15.7071200 </td>
-   <td style="text-align:right;"> 4.2101280 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Microsoft Corporation </td>
-   <td style="text-align:left;"> MSFT US Equity </td>
-   <td style="text-align:right;"> 0.0319209 </td>
-   <td style="text-align:left;"> IT </td>
-   <td style="text-align:left;"> NAM </td>
-   <td style="text-align:right;"> 10.320688 </td>
-   <td style="text-align:right;"> 24.53227 </td>
-   <td style="text-align:right;"> -19.5959900 </td>
-   <td style="text-align:right;"> -0.6534326 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Amazon.Com, Inc. </td>
-   <td style="text-align:left;"> AMZN US Equity </td>
-   <td style="text-align:right;"> 0.0166854 </td>
-   <td style="text-align:left;"> Cons. Discret. </td>
-   <td style="text-align:left;"> NAM </td>
-   <td style="text-align:right;"> 7.213344 </td>
-   <td style="text-align:right;"> 35.95194 </td>
-   <td style="text-align:right;"> -35.8794700 </td>
-   <td style="text-align:right;"> 14.1565900 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Alphabet Inc. Class A </td>
-   <td style="text-align:left;"> GOOGL US Equity </td>
-   <td style="text-align:right;"> 0.0108382 </td>
-   <td style="text-align:left;"> Communication Services </td>
-   <td style="text-align:left;"> NAM </td>
-   <td style="text-align:right;"> 5.012962 </td>
-   <td style="text-align:right;"> 17.68676 </td>
-   <td style="text-align:right;"> -26.4707500 </td>
-   <td style="text-align:right;"> 10.1100900 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Alphabet Inc. Class C </td>
-   <td style="text-align:left;"> GOOG US Equity </td>
-   <td style="text-align:right;"> 0.0101187 </td>
-   <td style="text-align:left;"> Communication Services </td>
-   <td style="text-align:left;"> NAM </td>
-   <td style="text-align:right;"> NA </td>
-   <td style="text-align:right;"> 17.91411 </td>
-   <td style="text-align:right;"> -25.6365800 </td>
-   <td style="text-align:right;"> 10.7664800 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Exxon Mobil Corporation </td>
-   <td style="text-align:left;"> XOM US Equity </td>
-   <td style="text-align:right;"> 0.0090124 </td>
-   <td style="text-align:left;"> Energy </td>
-   <td style="text-align:left;"> NAM </td>
-   <td style="text-align:right;"> 2.508196 </td>
-   <td style="text-align:right;"> 10.03808 </td>
-   <td style="text-align:right;"> 60.7926800 </td>
-   <td style="text-align:right;"> 6.2423840 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> UnitedHealth Group Incorporated </td>
-   <td style="text-align:left;"> UNH US Equity </td>
-   <td style="text-align:right;"> 0.0088011 </td>
-   <td style="text-align:left;"> Health Care </td>
-   <td style="text-align:left;"> NAM </td>
-   <td style="text-align:right;"> 5.583381 </td>
-   <td style="text-align:right;"> 19.60604 </td>
-   <td style="text-align:right;"> 6.4799050 </td>
-   <td style="text-align:right;"> -6.4377850 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Johnson &amp; Johnson </td>
-   <td style="text-align:left;"> JNJ US Equity </td>
-   <td style="text-align:right;"> 0.0086585 </td>
-   <td style="text-align:left;"> Health Care </td>
-   <td style="text-align:left;"> NAM </td>
-   <td style="text-align:right;"> 5.919284 </td>
-   <td style="text-align:right;"> 16.83696 </td>
-   <td style="text-align:right;"> 4.7876800 </td>
-   <td style="text-align:right;"> -3.9448970 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> NVIDIA Corporation </td>
-   <td style="text-align:left;"> NVDA US Equity </td>
-   <td style="text-align:right;"> 0.0081093 </td>
-   <td style="text-align:left;"> IT </td>
-   <td style="text-align:left;"> NAM </td>
-   <td style="text-align:right;"> 20.622349 </td>
-   <td style="text-align:right;"> 46.28697 </td>
-   <td style="text-align:right;"> -26.0654300 </td>
-   <td style="text-align:right;"> 10.9045700 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Berkshire Hathaway Inc. Class B </td>
-   <td style="text-align:left;"> BRK/B US Equity </td>
-   <td style="text-align:right;"> 0.0077148 </td>
-   <td style="text-align:left;"> Financials </td>
-   <td style="text-align:left;"> NAM </td>
-   <td style="text-align:right;"> NA </td>
-   <td style="text-align:right;"> 20.20013 </td>
-   <td style="text-align:right;"> -0.3665477 </td>
-   <td style="text-align:right;"> 2.6059600 </td>
-  </tr>
-</tbody>
-</table>
+<div id="rpvdigkfhb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rpvdigkfhb table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
+#rpvdigkfhb thead, #rpvdigkfhb tbody, #rpvdigkfhb tfoot, #rpvdigkfhb tr, #rpvdigkfhb td, #rpvdigkfhb th {
+  border-style: none;
+}
+
+#rpvdigkfhb p {
+  margin: 0;
+  padding: 0;
+}
+
+#rpvdigkfhb .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#rpvdigkfhb .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#rpvdigkfhb .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rpvdigkfhb .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rpvdigkfhb .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rpvdigkfhb .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rpvdigkfhb .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rpvdigkfhb .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#rpvdigkfhb .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#rpvdigkfhb .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#rpvdigkfhb .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#rpvdigkfhb .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#rpvdigkfhb .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#rpvdigkfhb .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#rpvdigkfhb .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rpvdigkfhb .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#rpvdigkfhb .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#rpvdigkfhb .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#rpvdigkfhb .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rpvdigkfhb .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#rpvdigkfhb .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#rpvdigkfhb .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#rpvdigkfhb .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rpvdigkfhb .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#rpvdigkfhb .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#rpvdigkfhb .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rpvdigkfhb .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rpvdigkfhb .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#rpvdigkfhb .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rpvdigkfhb .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#rpvdigkfhb .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rpvdigkfhb .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rpvdigkfhb .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rpvdigkfhb .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rpvdigkfhb .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rpvdigkfhb .gt_left {
+  text-align: left;
+}
+
+#rpvdigkfhb .gt_center {
+  text-align: center;
+}
+
+#rpvdigkfhb .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rpvdigkfhb .gt_font_normal {
+  font-weight: normal;
+}
+
+#rpvdigkfhb .gt_font_bold {
+  font-weight: bold;
+}
+
+#rpvdigkfhb .gt_font_italic {
+  font-style: italic;
+}
+
+#rpvdigkfhb .gt_super {
+  font-size: 65%;
+}
+
+#rpvdigkfhb .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#rpvdigkfhb .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#rpvdigkfhb .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#rpvdigkfhb .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#rpvdigkfhb .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#rpvdigkfhb .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#rpvdigkfhb .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="9" class="gt_heading gt_title gt_font_normal gt_bottom_border" style=""><strong>MSCI World with Bloomberg data</strong></td>
+    </tr>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="ticker">ticker</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="weight">weight</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="sector">sector</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Region">Region</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="best_pe_ratio">best_pe_ratio</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="px_to_book_ratio">px_to_book_ratio</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="last_close_trr_1yr">last_close_trr_1yr</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="last_close_trr_1mo">last_close_trr_1mo</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub">Apple Inc.</th>
+<td headers="stub_1_1 ticker" class="gt_row gt_left">AAPL US Equity</td>
+<td headers="stub_1_1 weight" class="gt_row gt_right">4.97</td>
+<td headers="stub_1_1 sector" class="gt_row gt_left">IT</td>
+<td headers="stub_1_1 Region" class="gt_row gt_left">NAM</td>
+<td headers="stub_1_1 best_pe_ratio" class="gt_row gt_right">29.08</td>
+<td headers="stub_1_1 px_to_book_ratio" class="gt_row gt_right">48.15</td>
+<td headers="stub_1_1 last_close_trr_1yr" class="gt_row gt_right">34.41</td>
+<td headers="stub_1_1 last_close_trr_1mo" class="gt_row gt_right">−0.33</td></tr>
+    <tr><th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub">Microsoft Corporation</th>
+<td headers="stub_1_2 ticker" class="gt_row gt_left gt_striped">MSFT US Equity</td>
+<td headers="stub_1_2 weight" class="gt_row gt_right gt_striped">4.68</td>
+<td headers="stub_1_2 sector" class="gt_row gt_left gt_striped">IT</td>
+<td headers="stub_1_2 Region" class="gt_row gt_left gt_striped">NAM</td>
+<td headers="stub_1_2 best_pe_ratio" class="gt_row gt_right gt_striped">35.59</td>
+<td headers="stub_1_2 px_to_book_ratio" class="gt_row gt_right gt_striped">13.60</td>
+<td headers="stub_1_2 last_close_trr_1yr" class="gt_row gt_right gt_striped">64.32</td>
+<td headers="stub_1_2 last_close_trr_1mo" class="gt_row gt_right gt_striped">7.81</td></tr>
+    <tr><th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub">NVIDIA Corporation</th>
+<td headers="stub_1_3 ticker" class="gt_row gt_left">NVDA US Equity</td>
+<td headers="stub_1_3 weight" class="gt_row gt_right">2.49</td>
+<td headers="stub_1_3 sector" class="gt_row gt_left">IT</td>
+<td headers="stub_1_3 Region" class="gt_row gt_left">NAM</td>
+<td headers="stub_1_3 best_pe_ratio" class="gt_row gt_right">30.80</td>
+<td headers="stub_1_3 px_to_book_ratio" class="gt_row gt_right">45.24</td>
+<td headers="stub_1_3 last_close_trr_1yr" class="gt_row gt_right">208.34</td>
+<td headers="stub_1_3 last_close_trr_1mo" class="gt_row gt_right">23.85</td></tr>
+    <tr><th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub">Amazon.Com, Inc.</th>
+<td headers="stub_1_4 ticker" class="gt_row gt_left gt_striped">AMZN US Equity</td>
+<td headers="stub_1_4 weight" class="gt_row gt_right gt_striped">2.40</td>
+<td headers="stub_1_4 sector" class="gt_row gt_left gt_striped">Cons. Discret.</td>
+<td headers="stub_1_4 Region" class="gt_row gt_left gt_striped">NAM</td>
+<td headers="stub_1_4 best_pe_ratio" class="gt_row gt_right gt_striped">36.52</td>
+<td headers="stub_1_4 px_to_book_ratio" class="gt_row gt_right gt_striped">8.98</td>
+<td headers="stub_1_4 last_close_trr_1yr" class="gt_row gt_right gt_striped">60.37</td>
+<td headers="stub_1_4 last_close_trr_1mo" class="gt_row gt_right gt_striped">3.72</td></tr>
+    <tr><th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub">Alphabet Inc. Class A</th>
+<td headers="stub_1_5 ticker" class="gt_row gt_left">GOOGL US Equity</td>
+<td headers="stub_1_5 weight" class="gt_row gt_right">1.48</td>
+<td headers="stub_1_5 sector" class="gt_row gt_left">Communication Services</td>
+<td headers="stub_1_5 Region" class="gt_row gt_left">NAM</td>
+<td headers="stub_1_5 best_pe_ratio" class="gt_row gt_right">21.80</td>
+<td headers="stub_1_5 px_to_book_ratio" class="gt_row gt_right">6.99</td>
+<td headers="stub_1_5 last_close_trr_1yr" class="gt_row gt_right">56.06</td>
+<td headers="stub_1_5 last_close_trr_1mo" class="gt_row gt_right">7.54</td></tr>
+    <tr><th id="stub_1_6" scope="row" class="gt_row gt_left gt_stub">Facebook, Inc. Class A</th>
+<td headers="stub_1_6 ticker" class="gt_row gt_left gt_striped">META US Equity</td>
+<td headers="stub_1_6 weight" class="gt_row gt_right gt_striped">1.43</td>
+<td headers="stub_1_6 sector" class="gt_row gt_left gt_striped">Communication Services</td>
+<td headers="stub_1_6 Region" class="gt_row gt_left gt_striped">NAM</td>
+<td headers="stub_1_6 best_pe_ratio" class="gt_row gt_right gt_striped">22.23</td>
+<td headers="stub_1_6 px_to_book_ratio" class="gt_row gt_right gt_striped">7.09</td>
+<td headers="stub_1_6 last_close_trr_1yr" class="gt_row gt_right gt_striped">167.58</td>
+<td headers="stub_1_6 last_close_trr_1mo" class="gt_row gt_right gt_striped">11.08</td></tr>
+    <tr><th id="stub_1_7" scope="row" class="gt_row gt_left gt_stub">Alphabet Inc. Class C</th>
+<td headers="stub_1_7 ticker" class="gt_row gt_left">GOOG US Equity</td>
+<td headers="stub_1_7 weight" class="gt_row gt_right">1.31</td>
+<td headers="stub_1_7 sector" class="gt_row gt_left">Communication Services</td>
+<td headers="stub_1_7 Region" class="gt_row gt_left">NAM</td>
+<td headers="stub_1_7 best_pe_ratio" class="gt_row gt_right">22.03</td>
+<td headers="stub_1_7 px_to_book_ratio" class="gt_row gt_right">NA</td>
+<td headers="stub_1_7 last_close_trr_1yr" class="gt_row gt_right">55.09</td>
+<td headers="stub_1_7 last_close_trr_1mo" class="gt_row gt_right">7.68</td></tr>
+    <tr><th id="stub_1_8" scope="row" class="gt_row gt_left gt_stub">Broadcom, Inc.</th>
+<td headers="stub_1_8 ticker" class="gt_row gt_left gt_striped">AVGO US Equity</td>
+<td headers="stub_1_8 weight" class="gt_row gt_right gt_striped">0.89</td>
+<td headers="stub_1_8 sector" class="gt_row gt_left gt_striped">IT</td>
+<td headers="stub_1_8 Region" class="gt_row gt_left gt_striped">NAM</td>
+<td headers="stub_1_8 best_pe_ratio" class="gt_row gt_right gt_striped">25.69</td>
+<td headers="stub_1_8 px_to_book_ratio" class="gt_row gt_right gt_striped">20.79</td>
+<td headers="stub_1_8 last_close_trr_1yr" class="gt_row gt_right gt_striped">105.92</td>
+<td headers="stub_1_8 last_close_trr_1mo" class="gt_row gt_right gt_striped">6.45</td></tr>
+    <tr><th id="stub_1_9" scope="row" class="gt_row gt_left gt_stub">Tesla, Inc.</th>
+<td headers="stub_1_9 ticker" class="gt_row gt_left">TSLA US Equity</td>
+<td headers="stub_1_9 weight" class="gt_row gt_right">0.85</td>
+<td headers="stub_1_9 sector" class="gt_row gt_left">Cons. Discret.</td>
+<td headers="stub_1_9 Region" class="gt_row gt_left">NAM</td>
+<td headers="stub_1_9 best_pe_ratio" class="gt_row gt_right">56.96</td>
+<td headers="stub_1_9 px_to_book_ratio" class="gt_row gt_right">9.30</td>
+<td headers="stub_1_9 last_close_trr_1yr" class="gt_row gt_right">14.34</td>
+<td headers="stub_1_9 last_close_trr_1mo" class="gt_row gt_right">−28.59</td></tr>
+    <tr><th id="stub_1_10" scope="row" class="gt_row gt_left gt_stub">Eli Lilly and Company</th>
+<td headers="stub_1_10 ticker" class="gt_row gt_left gt_striped">LLY US Equity</td>
+<td headers="stub_1_10 weight" class="gt_row gt_right gt_striped">0.83</td>
+<td headers="stub_1_10 sector" class="gt_row gt_left gt_striped">Health Care</td>
+<td headers="stub_1_10 Region" class="gt_row gt_left gt_striped">NAM</td>
+<td headers="stub_1_10 best_pe_ratio" class="gt_row gt_right gt_striped">59.38</td>
+<td headers="stub_1_10 px_to_book_ratio" class="gt_row gt_right gt_striped">54.08</td>
+<td headers="stub_1_10 last_close_trr_1yr" class="gt_row gt_right gt_striped">85.49</td>
+<td headers="stub_1_10 last_close_trr_1mo" class="gt_row gt_right gt_striped">12.02</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
 </div>
 </div>
 </section>
@@ -704,7 +1546,7 @@ M = \frac{P_{t-1}}{P_{t-12}} = \frac{P_{t-1}}{P_{t}} \times \frac{P_{t}}{P_{t-12
 \]</span></p>
 <p>Hence, we can compute momentum based on last 12 month return and last 1 month return.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">mutate</span>(<span class="at">mom =</span> (<span class="dv">1</span> <span class="sc">+</span> (last_close_trr_1yr<span class="sc">/</span><span class="dv">100</span>))</span>
 <span id="cb3-3"><a href="#cb3-3"></a>         <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> (last_close_trr_1mo<span class="sc">/</span><span class="dv">100</span>)) <span class="sc">-</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -712,8 +1554,8 @@ M = \frac{P_{t-1}}{P_{t-12}} = \frac{P_{t-1}}{P_{t}} \times \frac{P_{t}}{P_{t-12
 <section id="creating-rank-scores" class="slide level2">
 <h2>Creating rank scores</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>df_scores <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>df_scores <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">mutate</span>(<span class="at">z_pe =</span> <span class="fu">scale</span>(<span class="sc">-</span>best_pe_ratio, <span class="at">center =</span> T, <span class="at">scale =</span> T)[,<span class="dv">1</span>],</span>
 <span id="cb4-4"><a href="#cb4-4"></a>         <span class="at">z_pb =</span>  <span class="fu">scale</span>(<span class="sc">-</span>px_to_book_ratio, <span class="at">center =</span> T, <span class="at">scale =</span> T)[,<span class="dv">1</span>],</span>
 <span id="cb4-5"><a href="#cb4-5"></a>         <span class="at">z_value =</span><span class="fu">scale</span>(z_pe <span class="sc">+</span> z_pb, <span class="at">center =</span> T, <span class="at">scale =</span> T)[,<span class="dv">1</span>],</span>
@@ -723,357 +1565,2089 @@ M = \frac{P_{t-1}}{P_{t-12}} = \frac{P_{t-1}}{P_{t}} \times \frac{P_{t}}{P_{t-12
 <span id="cb4-9"><a href="#cb4-9"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="cheapest-and-most-expensive" class="slide level2 smaller">
-<h2>Cheapest and most expensive</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Cheapest</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>df_scores <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">select</span>(name, value, px_to_book_ratio, best_pe_ratio) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">slice_max</span>(value, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Cheapest companies in MSCI World"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="st">"striped"</span>, <span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">"left"</span>, <span class="at">font_size =</span> my_font_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="cheapest" class="slide level2 smaller">
+<h2>Cheapest</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>df_scores <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">select</span>(name, value, px_to_book_ratio, best_pe_ratio) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">slice_max</span>(value, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">gt</span>(<span class="at">rowname_col =</span> <span class="st">"name"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="fu">fmt_number</span>(</span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="at">columns =</span> <span class="fu">where</span>(is.numeric),</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    <span class="at">decimals =</span> <span class="dv">2</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb5-9"><a href="#cb5-9"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    <span class="fu">md</span>(<span class="st">"**Cheapest companies in MSCI World**"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a>  <span class="fu">tab_options</span>(</span>
+<span id="cb5-13"><a href="#cb5-13"></a>    <span class="at">table.font.size =</span> my_font_size</span>
+<span id="cb5-14"><a href="#cb5-14"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb5-15"><a href="#cb5-15"></a>  <span class="fu">opt_row_striping</span>(<span class="at">row_striping =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
 <div class="cell-output-display">
 
-<table class="table table-striped" style="font-size: 12px; width: auto !important; ">
-<caption style="font-size: initial !important;">Cheapest companies in MSCI World</caption>
- <thead>
-  <tr>
-   <th style="text-align:left;"> name </th>
-   <th style="text-align:right;"> value </th>
-   <th style="text-align:right;"> px_to_book_ratio </th>
-   <th style="text-align:right;"> best_pe_ratio </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> Mazda Motor Corp. </td>
-   <td style="text-align:right;"> 100.00000 </td>
-   <td style="text-align:right;"> 0.4318299 </td>
-   <td style="text-align:right;"> 3.593814 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Volkswagen AG Pref </td>
-   <td style="text-align:right;"> 99.90934 </td>
-   <td style="text-align:right;"> 0.3869248 </td>
-   <td style="text-align:right;"> 4.478979 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Societe Generale S.A. Class A </td>
-   <td style="text-align:right;"> 99.81868 </td>
-   <td style="text-align:right;"> 0.3043693 </td>
-   <td style="text-align:right;"> 5.165341 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Nippon Steel &amp; Sumitomo Metal Corp. </td>
-   <td style="text-align:right;"> 99.72801 </td>
-   <td style="text-align:right;"> 0.6264589 </td>
-   <td style="text-align:right;"> 3.513515 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Nissan Motor Co., Ltd. </td>
-   <td style="text-align:right;"> 99.63735 </td>
-   <td style="text-align:right;"> 0.3327870 </td>
-   <td style="text-align:right;"> 5.311196 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> INPEX Corp. </td>
-   <td style="text-align:right;"> 99.54669 </td>
-   <td style="text-align:right;"> 0.4968606 </td>
-   <td style="text-align:right;"> 4.617925 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Viatris, Inc. </td>
-   <td style="text-align:right;"> 99.45603 </td>
-   <td style="text-align:right;"> 0.7333209 </td>
-   <td style="text-align:right;"> 3.643216 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Barclays Plc </td>
-   <td style="text-align:right;"> 99.36537 </td>
-   <td style="text-align:right;"> 0.5311564 </td>
-   <td style="text-align:right;"> 5.381437 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Volkswagen Ag </td>
-   <td style="text-align:right;"> 99.27471 </td>
-   <td style="text-align:right;"> 0.4974391 </td>
-   <td style="text-align:right;"> 5.758275 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Honda Motor Co., Ltd. </td>
-   <td style="text-align:right;"> 99.18404 </td>
-   <td style="text-align:right;"> 0.4538799 </td>
-   <td style="text-align:right;"> 6.106952 </td>
-  </tr>
-</tbody>
+<div id="dptwkslsvu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dptwkslsvu table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#dptwkslsvu thead, #dptwkslsvu tbody, #dptwkslsvu tfoot, #dptwkslsvu tr, #dptwkslsvu td, #dptwkslsvu th {
+  border-style: none;
+}
+
+#dptwkslsvu p {
+  margin: 0;
+  padding: 0;
+}
+
+#dptwkslsvu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#dptwkslsvu .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#dptwkslsvu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#dptwkslsvu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#dptwkslsvu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dptwkslsvu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dptwkslsvu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dptwkslsvu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#dptwkslsvu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#dptwkslsvu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#dptwkslsvu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#dptwkslsvu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#dptwkslsvu .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#dptwkslsvu .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#dptwkslsvu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#dptwkslsvu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#dptwkslsvu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#dptwkslsvu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#dptwkslsvu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dptwkslsvu .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#dptwkslsvu .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#dptwkslsvu .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#dptwkslsvu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dptwkslsvu .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#dptwkslsvu .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#dptwkslsvu .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dptwkslsvu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dptwkslsvu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#dptwkslsvu .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dptwkslsvu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#dptwkslsvu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dptwkslsvu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dptwkslsvu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dptwkslsvu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dptwkslsvu .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dptwkslsvu .gt_left {
+  text-align: left;
+}
+
+#dptwkslsvu .gt_center {
+  text-align: center;
+}
+
+#dptwkslsvu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#dptwkslsvu .gt_font_normal {
+  font-weight: normal;
+}
+
+#dptwkslsvu .gt_font_bold {
+  font-weight: bold;
+}
+
+#dptwkslsvu .gt_font_italic {
+  font-style: italic;
+}
+
+#dptwkslsvu .gt_super {
+  font-size: 65%;
+}
+
+#dptwkslsvu .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#dptwkslsvu .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#dptwkslsvu .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#dptwkslsvu .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#dptwkslsvu .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#dptwkslsvu .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#dptwkslsvu .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style=""><strong>Cheapest companies in MSCI World</strong></td>
+    </tr>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="value">value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="px_to_book_ratio">px_to_book_ratio</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="best_pe_ratio">best_pe_ratio</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub">Societe Generale S.A. Class A</th>
+<td headers="stub_1_1 value" class="gt_row gt_right">100.00</td>
+<td headers="stub_1_1 px_to_book_ratio" class="gt_row gt_right">0.29</td>
+<td headers="stub_1_1 best_pe_ratio" class="gt_row gt_right">3.64</td></tr>
+    <tr><th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub">JXTG Holdings. Inc.</th>
+<td headers="stub_1_2 value" class="gt_row gt_right gt_striped">99.91</td>
+<td headers="stub_1_2 px_to_book_ratio" class="gt_row gt_right gt_striped">0.60</td>
+<td headers="stub_1_2 best_pe_ratio" class="gt_row gt_right gt_striped">3.45</td></tr>
+    <tr><th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub">Volkswagen AG Pref</th>
+<td headers="stub_1_3 value" class="gt_row gt_right">99.82</td>
+<td headers="stub_1_3 px_to_book_ratio" class="gt_row gt_right">0.36</td>
+<td headers="stub_1_3 best_pe_ratio" class="gt_row gt_right">3.84</td></tr>
+    <tr><th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub">Volkswagen Ag</th>
+<td headers="stub_1_4 value" class="gt_row gt_right gt_striped">99.73</td>
+<td headers="stub_1_4 px_to_book_ratio" class="gt_row gt_right gt_striped">0.40</td>
+<td headers="stub_1_4 best_pe_ratio" class="gt_row gt_right gt_striped">4.23</td></tr>
+    <tr><th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub">Viatris, Inc.</th>
+<td headers="stub_1_5 value" class="gt_row gt_right">99.64</td>
+<td headers="stub_1_5 px_to_book_ratio" class="gt_row gt_right">0.69</td>
+<td headers="stub_1_5 best_pe_ratio" class="gt_row gt_right">4.24</td></tr>
+    <tr><th id="stub_1_6" scope="row" class="gt_row gt_left gt_stub">Coca-Cola European Partners PLC</th>
+<td headers="stub_1_6 value" class="gt_row gt_right gt_striped">99.55</td>
+<td headers="stub_1_6 px_to_book_ratio" class="gt_row gt_right gt_striped">3.76</td>
+<td headers="stub_1_6 best_pe_ratio" class="gt_row gt_right gt_striped">1.71</td></tr>
+    <tr><th id="stub_1_7" scope="row" class="gt_row gt_left gt_stub">Mazda Motor Corp.</th>
+<td headers="stub_1_7 value" class="gt_row gt_right">99.46</td>
+<td headers="stub_1_7 px_to_book_ratio" class="gt_row gt_right">0.70</td>
+<td headers="stub_1_7 best_pe_ratio" class="gt_row gt_right">4.60</td></tr>
+    <tr><th id="stub_1_8" scope="row" class="gt_row gt_left gt_stub">Carlsberg A/S Class B</th>
+<td headers="stub_1_8 value" class="gt_row gt_right gt_striped">99.36</td>
+<td headers="stub_1_8 px_to_book_ratio" class="gt_row gt_right gt_striped">4.33</td>
+<td headers="stub_1_8 best_pe_ratio" class="gt_row gt_right gt_striped">1.57</td></tr>
+    <tr><th id="stub_1_9" scope="row" class="gt_row gt_left gt_stub">REPSOL SA</th>
+<td headers="stub_1_9 value" class="gt_row gt_right">99.27</td>
+<td headers="stub_1_9 px_to_book_ratio" class="gt_row gt_right">0.72</td>
+<td headers="stub_1_9 best_pe_ratio" class="gt_row gt_right">4.84</td></tr>
+    <tr><th id="stub_1_10" scope="row" class="gt_row gt_left gt_stub">General Motors Company</th>
+<td headers="stub_1_10 value" class="gt_row gt_right gt_striped">99.18</td>
+<td headers="stub_1_10 px_to_book_ratio" class="gt_row gt_right gt_striped">0.66</td>
+<td headers="stub_1_10 best_pe_ratio" class="gt_row gt_right gt_striped">4.89</td></tr>
+  </tbody>
+  
+  
 </table>
-
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<p>Most expensive</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>df_scores <span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">select</span>(name, value, px_to_book_ratio, best_pe_ratio) <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">slice_min</span>(value, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Most expensive companies in MSCI World"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="st">"striped"</span>, <span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">"left"</span>, <span class="at">font_size =</span> my_font_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-
-<table class="table table-striped" style="font-size: 12px; width: auto !important; ">
-<caption style="font-size: initial !important;">Most expensive companies in MSCI World</caption>
- <thead>
-  <tr>
-   <th style="text-align:left;"> name </th>
-   <th style="text-align:right;"> value </th>
-   <th style="text-align:right;"> px_to_book_ratio </th>
-   <th style="text-align:right;"> best_pe_ratio </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> Vestas Wind Systems A/S </td>
-   <td style="text-align:right;"> 0.0000000 </td>
-   <td style="text-align:right;"> 7.426209 </td>
-   <td style="text-align:right;"> 3414.90167 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Dollarama Inc. </td>
-   <td style="text-align:right;"> 0.0906618 </td>
-   <td style="text-align:right;"> 581.478570 </td>
-   <td style="text-align:right;"> 27.34282 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Home Depot, Inc. </td>
-   <td style="text-align:right;"> 0.1813237 </td>
-   <td style="text-align:right;"> 247.534669 </td>
-   <td style="text-align:right;"> 18.81608 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Uber Technologies, Inc. </td>
-   <td style="text-align:right;"> 0.2719855 </td>
-   <td style="text-align:right;"> 9.473545 </td>
-   <td style="text-align:right;"> 607.20000 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Chewy, Inc. </td>
-   <td style="text-align:right;"> 0.3626473 </td>
-   <td style="text-align:right;"> 106.654396 </td>
-   <td style="text-align:right;"> 94.14579 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Insulet Corp. </td>
-   <td style="text-align:right;"> 0.4533092 </td>
-   <td style="text-align:right;"> 47.743655 </td>
-   <td style="text-align:right;"> 360.23256 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> MongoDB, Inc. </td>
-   <td style="text-align:right;"> 0.5439710 </td>
-   <td style="text-align:right;"> 20.025264 </td>
-   <td style="text-align:right;"> 461.21212 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Colgate-Palmolive Company </td>
-   <td style="text-align:right;"> 0.6346328 </td>
-   <td style="text-align:right;"> 101.299939 </td>
-   <td style="text-align:right;"> 24.63749 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Ventas, Inc. </td>
-   <td style="text-align:right;"> 0.7252947 </td>
-   <td style="text-align:right;"> 1.901098 </td>
-   <td style="text-align:right;"> 535.65217 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> IDEXX Laboratories, Inc. </td>
-   <td style="text-align:right;"> 0.8159565 </td>
-   <td style="text-align:right;"> 85.240927 </td>
-   <td style="text-align:right;"> 53.19695 </td>
-  </tr>
-</tbody>
-</table>
-
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="winners-and-losers" class="slide level2 smaller">
-<h2>Winners and losers</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Winners</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>df_scores <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">select</span>(name, momentum, last_close_trr_1yr, last_close_trr_1mo) <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">slice_max</span>(momentum, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-4"><a href="#cb7-4"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Highest momentum in MSCI World"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="st">"striped"</span>, <span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">"left"</span>, <span class="at">font_size =</span> my_font_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="most-expensive" class="slide level2 smaller">
+<h2>Most expensive</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>df_scores <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">select</span>(name, value, px_to_book_ratio, best_pe_ratio) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">slice_min</span>(value, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">gt</span>(<span class="at">rowname_col =</span> <span class="st">"name"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="fu">md</span>(<span class="st">"**Most expensive companies in MSCI World**"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>  <span class="fu">tab_options</span>(</span>
+<span id="cb6-9"><a href="#cb6-9"></a>    <span class="at">table.font.size =</span> my_font_size</span>
+<span id="cb6-10"><a href="#cb6-10"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb6-11"><a href="#cb6-11"></a>  <span class="fu">opt_row_striping</span>(<span class="at">row_striping =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
 <div class="cell-output-display">
 
-<table class="table table-striped" style="font-size: 12px; width: auto !important; ">
-<caption style="font-size: initial !important;">Highest momentum in MSCI World</caption>
- <thead>
-  <tr>
-   <th style="text-align:left;"> name </th>
-   <th style="text-align:right;"> momentum </th>
-   <th style="text-align:right;"> last_close_trr_1yr </th>
-   <th style="text-align:right;"> last_close_trr_1mo </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> Texas Pacific Land Corp. </td>
-   <td style="text-align:right;"> 100.00000 </td>
-   <td style="text-align:right;"> 111.04170 </td>
-   <td style="text-align:right;"> -17.022300 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Enphase Energy, Inc. </td>
-   <td style="text-align:right;"> 99.90934 </td>
-   <td style="text-align:right;"> 65.22385 </td>
-   <td style="text-align:right;"> -26.328330 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Rheinmetall Ag </td>
-   <td style="text-align:right;"> 99.81868 </td>
-   <td style="text-align:right;"> 144.68490 </td>
-   <td style="text-align:right;"> 24.416020 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Constellation Energy </td>
-   <td style="text-align:right;"> 99.72801 </td>
-   <td style="text-align:right;"> 86.11912 </td>
-   <td style="text-align:right;"> -5.207858 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> First Solar, Inc. </td>
-   <td style="text-align:right;"> 99.63735 </td>
-   <td style="text-align:right;"> 106.00070 </td>
-   <td style="text-align:right;"> 7.203525 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Steel Dynamics, Inc. </td>
-   <td style="text-align:right;"> 99.54669 </td>
-   <td style="text-align:right;"> 92.96611 </td>
-   <td style="text-align:right;"> 5.032172 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Occidental Petroleum Corporation </td>
-   <td style="text-align:right;"> 99.45603 </td>
-   <td style="text-align:right;"> 93.04145 </td>
-   <td style="text-align:right;"> 7.279140 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> EQT Corporation </td>
-   <td style="text-align:right;"> 99.36537 </td>
-   <td style="text-align:right;"> 63.32049 </td>
-   <td style="text-align:right;"> -6.059768 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Tourmaline Oil Corp. </td>
-   <td style="text-align:right;"> 99.27471 </td>
-   <td style="text-align:right;"> 64.57170 </td>
-   <td style="text-align:right;"> -3.052141 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Daiichi Sankyo Co., Ltd. </td>
-   <td style="text-align:right;"> 99.18404 </td>
-   <td style="text-align:right;"> 62.72910 </td>
-   <td style="text-align:right;"> -2.524902 </td>
-  </tr>
-</tbody>
-</table>
+<div id="sfzuadtjgg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#sfzuadtjgg table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
+#sfzuadtjgg thead, #sfzuadtjgg tbody, #sfzuadtjgg tfoot, #sfzuadtjgg tr, #sfzuadtjgg td, #sfzuadtjgg th {
+  border-style: none;
+}
+
+#sfzuadtjgg p {
+  margin: 0;
+  padding: 0;
+}
+
+#sfzuadtjgg .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#sfzuadtjgg .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#sfzuadtjgg .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#sfzuadtjgg .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#sfzuadtjgg .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#sfzuadtjgg .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sfzuadtjgg .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#sfzuadtjgg .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#sfzuadtjgg .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#sfzuadtjgg .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#sfzuadtjgg .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#sfzuadtjgg .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#sfzuadtjgg .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#sfzuadtjgg .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#sfzuadtjgg .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#sfzuadtjgg .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#sfzuadtjgg .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#sfzuadtjgg .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#sfzuadtjgg .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sfzuadtjgg .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#sfzuadtjgg .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#sfzuadtjgg .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#sfzuadtjgg .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sfzuadtjgg .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#sfzuadtjgg .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#sfzuadtjgg .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sfzuadtjgg .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sfzuadtjgg .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#sfzuadtjgg .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sfzuadtjgg .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#sfzuadtjgg .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sfzuadtjgg .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#sfzuadtjgg .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sfzuadtjgg .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#sfzuadtjgg .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sfzuadtjgg .gt_left {
+  text-align: left;
+}
+
+#sfzuadtjgg .gt_center {
+  text-align: center;
+}
+
+#sfzuadtjgg .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#sfzuadtjgg .gt_font_normal {
+  font-weight: normal;
+}
+
+#sfzuadtjgg .gt_font_bold {
+  font-weight: bold;
+}
+
+#sfzuadtjgg .gt_font_italic {
+  font-style: italic;
+}
+
+#sfzuadtjgg .gt_super {
+  font-size: 65%;
+}
+
+#sfzuadtjgg .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#sfzuadtjgg .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#sfzuadtjgg .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#sfzuadtjgg .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#sfzuadtjgg .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#sfzuadtjgg .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#sfzuadtjgg .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style=""><strong>Most expensive companies in MSCI World</strong></td>
+    </tr>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="value">value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="px_to_book_ratio">px_to_book_ratio</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="best_pe_ratio">best_pe_ratio</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub">Fortinet, Inc.</th>
+<td headers="stub_1_1 value" class="gt_row gt_right">0.00000000</td>
+<td headers="stub_1_1 px_to_book_ratio" class="gt_row gt_right">692.698490</td>
+<td headers="stub_1_1 best_pe_ratio" class="gt_row gt_right">40.73937</td></tr>
+    <tr><th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub">COINBASE GLOBAL INC -CLASS A</th>
+<td headers="stub_1_2 value" class="gt_row gt_right gt_striped">0.09082652</td>
+<td headers="stub_1_2 px_to_book_ratio" class="gt_row gt_right gt_striped">5.057140</td>
+<td headers="stub_1_2 best_pe_ratio" class="gt_row gt_right gt_striped">335.65684</td></tr>
+    <tr><th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub">Illumina, Inc.</th>
+<td headers="stub_1_3 value" class="gt_row gt_right">0.18165304</td>
+<td headers="stub_1_3 px_to_book_ratio" class="gt_row gt_right">3.767301</td>
+<td headers="stub_1_3 best_pe_ratio" class="gt_row gt_right">245.00000</td></tr>
+    <tr><th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub">Home Depot, Inc.</th>
+<td headers="stub_1_4 value" class="gt_row gt_right gt_striped">0.27247956</td>
+<td headers="stub_1_4 px_to_book_ratio" class="gt_row gt_right gt_striped">247.467684</td>
+<td headers="stub_1_4 best_pe_ratio" class="gt_row gt_right gt_striped">23.51112</td></tr>
+    <tr><th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub">Snowflake, Inc.</th>
+<td headers="stub_1_5 value" class="gt_row gt_right">0.36330609</td>
+<td headers="stub_1_5 px_to_book_ratio" class="gt_row gt_right">13.520778</td>
+<td headers="stub_1_5 best_pe_ratio" class="gt_row gt_right">208.12950</td></tr>
+    <tr><th id="stub_1_6" scope="row" class="gt_row gt_left gt_stub">Cloudflare, Inc.</th>
+<td headers="stub_1_6 value" class="gt_row gt_right gt_striped">0.45413261</td>
+<td headers="stub_1_6 px_to_book_ratio" class="gt_row gt_right gt_striped">38.488996</td>
+<td headers="stub_1_6 best_pe_ratio" class="gt_row gt_right gt_striped">148.48148</td></tr>
+    <tr><th id="stub_1_7" scope="row" class="gt_row gt_left gt_stub">ATLASSIAN CORP PLC-CLASS A</th>
+<td headers="stub_1_7 value" class="gt_row gt_right">0.54495913</td>
+<td headers="stub_1_7 px_to_book_ratio" class="gt_row gt_right">82.614335</td>
+<td headers="stub_1_7 best_pe_ratio" class="gt_row gt_right">101.18007</td></tr>
+    <tr><th id="stub_1_8" scope="row" class="gt_row gt_left gt_stub">MongoDB, Inc.</th>
+<td headers="stub_1_8 value" class="gt_row gt_right gt_striped">0.63578565</td>
+<td headers="stub_1_8 px_to_book_ratio" class="gt_row gt_right gt_striped">29.399159</td>
+<td headers="stub_1_8 best_pe_ratio" class="gt_row gt_right gt_striped">141.32642</td></tr>
+    <tr><th id="stub_1_9" scope="row" class="gt_row gt_left gt_stub">CyberArk Software Ltd.</th>
+<td headers="stub_1_9 value" class="gt_row gt_right">0.72661217</td>
+<td headers="stub_1_9 px_to_book_ratio" class="gt_row gt_right">13.434731</td>
+<td headers="stub_1_9 best_pe_ratio" class="gt_row gt_right">150.58480</td></tr>
+    <tr><th id="stub_1_10" scope="row" class="gt_row gt_left gt_stub">Motorola Solutions, Inc.</th>
+<td headers="stub_1_10 value" class="gt_row gt_right gt_striped">0.81743869</td>
+<td headers="stub_1_10 px_to_book_ratio" class="gt_row gt_right gt_striped">149.717738</td>
+<td headers="stub_1_10 best_pe_ratio" class="gt_row gt_right gt_striped">26.59219</td></tr>
+  </tbody>
+  
+  
+</table>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
-<p>Losers</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>df_scores <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">select</span>(name, momentum, last_close_trr_1yr, last_close_trr_1mo) <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">slice_min</span>(momentum, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Lowest momentum in MSCI World"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="st">"striped"</span>, <span class="at">full_width =</span> F, <span class="at">position =</span> <span class="st">"left"</span>, <span class="at">font_size =</span> my_font_size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="winners" class="slide level2 smaller">
+<h2>Winners</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>df_scores <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">select</span>(name, momentum, last_close_trr_1yr, last_close_trr_1mo) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">slice_max</span>(momentum, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>  <span class="fu">gt</span>(<span class="at">rowname_col =</span> <span class="st">"name"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-5"><a href="#cb7-5"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb7-6"><a href="#cb7-6"></a>    <span class="fu">md</span>(<span class="st">"**Highest momentum in MSCI World**"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>  <span class="fu">tab_options</span>(</span>
+<span id="cb7-9"><a href="#cb7-9"></a>    <span class="at">table.font.size =</span> my_font_size</span>
+<span id="cb7-10"><a href="#cb7-10"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb7-11"><a href="#cb7-11"></a>  <span class="fu">opt_row_striping</span>(<span class="at">row_striping =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
 <div class="cell-output-display">
 
-<table class="table table-striped" style="font-size: 12px; width: auto !important; ">
-<caption style="font-size: initial !important;">Lowest momentum in MSCI World</caption>
- <thead>
-  <tr>
-   <th style="text-align:left;"> name </th>
-   <th style="text-align:right;"> momentum </th>
-   <th style="text-align:right;"> last_close_trr_1yr </th>
-   <th style="text-align:right;"> last_close_trr_1mo </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;"> Snap, Inc. </td>
-   <td style="text-align:right;"> 0.0000000 </td>
-   <td style="text-align:right;"> -71.44898 </td>
-   <td style="text-align:right;"> 21.680880 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Unity Software, Inc. </td>
-   <td style="text-align:right;"> 0.0906618 </td>
-   <td style="text-align:right;"> -72.42867 </td>
-   <td style="text-align:right;"> 12.910210 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Generac Holdings, Inc. </td>
-   <td style="text-align:right;"> 0.1813237 </td>
-   <td style="text-align:right;"> -61.81409 </td>
-   <td style="text-align:right;"> 19.311560 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> SVB Financial Group </td>
-   <td style="text-align:right;"> 0.2719855 </td>
-   <td style="text-align:right;"> -55.02053 </td>
-   <td style="text-align:right;"> 37.174060 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Okta, Inc. </td>
-   <td style="text-align:right;"> 0.3626473 </td>
-   <td style="text-align:right;"> -65.70487 </td>
-   <td style="text-align:right;"> 3.666818 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Signature Bank (New York, New York) </td>
-   <td style="text-align:right;"> 0.4533092 </td>
-   <td style="text-align:right;"> -62.00592 </td>
-   <td style="text-align:right;"> 12.175210 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> HelloFresh SE </td>
-   <td style="text-align:right;"> 0.5439710 </td>
-   <td style="text-align:right;"> -60.56218 </td>
-   <td style="text-align:right;"> 9.924026 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Facebook, Inc. Class A </td>
-   <td style="text-align:right;"> 0.6346328 </td>
-   <td style="text-align:right;"> -55.97359 </td>
-   <td style="text-align:right;"> 19.028100 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> V.F. Corporation </td>
-   <td style="text-align:right;"> 0.7252947 </td>
-   <td style="text-align:right;"> -53.75602 </td>
-   <td style="text-align:right;"> 16.567340 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> PayPal Holdings, Inc. </td>
-   <td style="text-align:right;"> 0.8159565 </td>
-   <td style="text-align:right;"> -54.35711 </td>
-   <td style="text-align:right;"> 15.023270 </td>
-  </tr>
-</tbody>
-</table>
+<div id="pylbkjzwbu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#pylbkjzwbu table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
+#pylbkjzwbu thead, #pylbkjzwbu tbody, #pylbkjzwbu tfoot, #pylbkjzwbu tr, #pylbkjzwbu td, #pylbkjzwbu th {
+  border-style: none;
+}
+
+#pylbkjzwbu p {
+  margin: 0;
+  padding: 0;
+}
+
+#pylbkjzwbu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#pylbkjzwbu .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#pylbkjzwbu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#pylbkjzwbu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#pylbkjzwbu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#pylbkjzwbu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pylbkjzwbu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#pylbkjzwbu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#pylbkjzwbu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#pylbkjzwbu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#pylbkjzwbu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#pylbkjzwbu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#pylbkjzwbu .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#pylbkjzwbu .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#pylbkjzwbu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#pylbkjzwbu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#pylbkjzwbu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#pylbkjzwbu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#pylbkjzwbu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pylbkjzwbu .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#pylbkjzwbu .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#pylbkjzwbu .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#pylbkjzwbu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pylbkjzwbu .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#pylbkjzwbu .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#pylbkjzwbu .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pylbkjzwbu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pylbkjzwbu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#pylbkjzwbu .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pylbkjzwbu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#pylbkjzwbu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#pylbkjzwbu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#pylbkjzwbu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pylbkjzwbu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#pylbkjzwbu .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#pylbkjzwbu .gt_left {
+  text-align: left;
+}
+
+#pylbkjzwbu .gt_center {
+  text-align: center;
+}
+
+#pylbkjzwbu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#pylbkjzwbu .gt_font_normal {
+  font-weight: normal;
+}
+
+#pylbkjzwbu .gt_font_bold {
+  font-weight: bold;
+}
+
+#pylbkjzwbu .gt_font_italic {
+  font-style: italic;
+}
+
+#pylbkjzwbu .gt_super {
+  font-size: 65%;
+}
+
+#pylbkjzwbu .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#pylbkjzwbu .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#pylbkjzwbu .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#pylbkjzwbu .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#pylbkjzwbu .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#pylbkjzwbu .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#pylbkjzwbu .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style=""><strong>Highest momentum in MSCI World</strong></td>
+    </tr>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="momentum">momentum</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="last_close_trr_1yr">last_close_trr_1yr</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="last_close_trr_1mo">last_close_trr_1mo</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub">Super Micro Computer, Inc.</th>
+<td headers="stub_1_1 momentum" class="gt_row gt_right">100.00000</td>
+<td headers="stub_1_1 last_close_trr_1yr" class="gt_row gt_right">521.6730</td>
+<td headers="stub_1_1 last_close_trr_1mo" class="gt_row gt_right">61.0946900</td></tr>
+    <tr><th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub">Vertiv Holdings Co.</th>
+<td headers="stub_1_2 momentum" class="gt_row gt_right gt_striped">99.90917</td>
+<td headers="stub_1_2 last_close_trr_1yr" class="gt_row gt_right gt_striped">280.7000</td>
+<td headers="stub_1_2 last_close_trr_1mo" class="gt_row gt_right gt_striped">9.1243110</td></tr>
+    <tr><th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub">COINBASE GLOBAL INC -CLASS A</th>
+<td headers="stub_1_3 momentum" class="gt_row gt_right">99.81835</td>
+<td headers="stub_1_3 last_close_trr_1yr" class="gt_row gt_right">136.1373</td>
+<td headers="stub_1_3 last_close_trr_1mo" class="gt_row gt_right">-27.2304600</td></tr>
+    <tr><th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub">DISCO Corp.</th>
+<td headers="stub_1_4 momentum" class="gt_row gt_right gt_striped">99.72752</td>
+<td headers="stub_1_4 last_close_trr_1yr" class="gt_row gt_right gt_striped">209.4424</td>
+<td headers="stub_1_4 last_close_trr_1mo" class="gt_row gt_right gt_striped">15.1162800</td></tr>
+    <tr><th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub">NVIDIA Corporation</th>
+<td headers="stub_1_5 momentum" class="gt_row gt_right">99.63669</td>
+<td headers="stub_1_5 last_close_trr_1yr" class="gt_row gt_right">208.3448</td>
+<td headers="stub_1_5 last_close_trr_1mo" class="gt_row gt_right">23.8478900</td></tr>
+    <tr><th id="stub_1_6" scope="row" class="gt_row gt_left gt_stub">CrowdStrike Holdings, Inc.</th>
+<td headers="stub_1_6 momentum" class="gt_row gt_right gt_striped">99.54587</td>
+<td headers="stub_1_6 last_close_trr_1yr" class="gt_row gt_right gt_striped">177.8884</td>
+<td headers="stub_1_6 last_close_trr_1mo" class="gt_row gt_right gt_striped">12.5799800</td></tr>
+    <tr><th id="stub_1_7" scope="row" class="gt_row gt_left gt_stub">Palantir Technologies, Inc.</th>
+<td headers="stub_1_7 momentum" class="gt_row gt_right">99.45504</td>
+<td headers="stub_1_7 last_close_trr_1yr" class="gt_row gt_right">125.8287</td>
+<td headers="stub_1_7 last_close_trr_1mo" class="gt_row gt_right">-7.5226240</td></tr>
+    <tr><th id="stub_1_8" scope="row" class="gt_row gt_left gt_stub">Facebook, Inc. Class A</th>
+<td headers="stub_1_8 momentum" class="gt_row gt_right gt_striped">99.36421</td>
+<td headers="stub_1_8 last_close_trr_1yr" class="gt_row gt_right gt_striped">167.5764</td>
+<td headers="stub_1_8 last_close_trr_1mo" class="gt_row gt_right gt_striped">11.0785400</td></tr>
+    <tr><th id="stub_1_9" scope="row" class="gt_row gt_left gt_stub">Builders FirstSource, Inc.</th>
+<td headers="stub_1_9 momentum" class="gt_row gt_right">99.27339</td>
+<td headers="stub_1_9 last_close_trr_1yr" class="gt_row gt_right">123.9958</td>
+<td headers="stub_1_9 last_close_trr_1mo" class="gt_row gt_right">0.5218216</td></tr>
+    <tr><th id="stub_1_10" scope="row" class="gt_row gt_left gt_stub">BE Semiconductor Industries NV</th>
+<td headers="stub_1_10 momentum" class="gt_row gt_right gt_striped">99.18256</td>
+<td headers="stub_1_10 last_close_trr_1yr" class="gt_row gt_right gt_striped">121.9938</td>
+<td headers="stub_1_10 last_close_trr_1mo" class="gt_row gt_right gt_striped">3.6284470</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="losers" class="slide level2 smaller">
+<h2>Losers</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>df_scores <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">select</span>(name, momentum, last_close_trr_1yr, last_close_trr_1mo) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">slice_min</span>(momentum, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">gt</span>(<span class="at">rowname_col =</span> <span class="st">"name"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb8-6"><a href="#cb8-6"></a>    <span class="fu">md</span>(<span class="st">"**Lowest momentum in MSCI World**"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>  <span class="fu">tab_options</span>(</span>
+<span id="cb8-9"><a href="#cb8-9"></a>    <span class="at">table.font.size =</span> my_font_size</span>
+<span id="cb8-10"><a href="#cb8-10"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb8-11"><a href="#cb8-11"></a>  <span class="fu">opt_row_striping</span>(<span class="at">row_striping =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+
+<div id="dcyzzokgmx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dcyzzokgmx table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#dcyzzokgmx thead, #dcyzzokgmx tbody, #dcyzzokgmx tfoot, #dcyzzokgmx tr, #dcyzzokgmx td, #dcyzzokgmx th {
+  border-style: none;
+}
+
+#dcyzzokgmx p {
+  margin: 0;
+  padding: 0;
+}
+
+#dcyzzokgmx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#dcyzzokgmx .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#dcyzzokgmx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#dcyzzokgmx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#dcyzzokgmx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dcyzzokgmx .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dcyzzokgmx .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dcyzzokgmx .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#dcyzzokgmx .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#dcyzzokgmx .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#dcyzzokgmx .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#dcyzzokgmx .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#dcyzzokgmx .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#dcyzzokgmx .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#dcyzzokgmx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#dcyzzokgmx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#dcyzzokgmx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#dcyzzokgmx .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#dcyzzokgmx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dcyzzokgmx .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#dcyzzokgmx .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#dcyzzokgmx .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#dcyzzokgmx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dcyzzokgmx .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#dcyzzokgmx .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#dcyzzokgmx .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dcyzzokgmx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dcyzzokgmx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#dcyzzokgmx .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dcyzzokgmx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#dcyzzokgmx .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dcyzzokgmx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dcyzzokgmx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dcyzzokgmx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dcyzzokgmx .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dcyzzokgmx .gt_left {
+  text-align: left;
+}
+
+#dcyzzokgmx .gt_center {
+  text-align: center;
+}
+
+#dcyzzokgmx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#dcyzzokgmx .gt_font_normal {
+  font-weight: normal;
+}
+
+#dcyzzokgmx .gt_font_bold {
+  font-weight: bold;
+}
+
+#dcyzzokgmx .gt_font_italic {
+  font-style: italic;
+}
+
+#dcyzzokgmx .gt_super {
+  font-size: 65%;
+}
+
+#dcyzzokgmx .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#dcyzzokgmx .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#dcyzzokgmx .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#dcyzzokgmx .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#dcyzzokgmx .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#dcyzzokgmx .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#dcyzzokgmx .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style=""><strong>Lowest momentum in MSCI World</strong></td>
+    </tr>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="momentum">momentum</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="last_close_trr_1yr">last_close_trr_1yr</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="last_close_trr_1mo">last_close_trr_1mo</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub">FMC Corporation</th>
+<td headers="stub_1_1 momentum" class="gt_row gt_right">0.00000000</td>
+<td headers="stub_1_1 last_close_trr_1yr" class="gt_row gt_right">-54.14939</td>
+<td headers="stub_1_1 last_close_trr_1mo" class="gt_row gt_right">-7.6175710</td></tr>
+    <tr><th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub">Estee Lauder Companies Inc. Class A</th>
+<td headers="stub_1_2 momentum" class="gt_row gt_right gt_striped">0.09082652</td>
+<td headers="stub_1_2 last_close_trr_1yr" class="gt_row gt_right gt_striped">-51.38241</td>
+<td headers="stub_1_2 last_close_trr_1mo" class="gt_row gt_right gt_striped">-9.7993240</td></tr>
+    <tr><th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub">Albemarle Corporation</th>
+<td headers="stub_1_3 momentum" class="gt_row gt_right">0.18165304</td>
+<td headers="stub_1_3 last_close_trr_1yr" class="gt_row gt_right">-56.75008</td>
+<td headers="stub_1_3 last_close_trr_1mo" class="gt_row gt_right">-21.3596700</td></tr>
+    <tr><th id="stub_1_4" scope="row" class="gt_row gt_left gt_stub">Dollar General Corporation</th>
+<td headers="stub_1_4 momentum" class="gt_row gt_right gt_striped">0.27247956</td>
+<td headers="stub_1_4 last_close_trr_1yr" class="gt_row gt_right gt_striped">-42.80246</td>
+<td headers="stub_1_4 last_close_trr_1mo" class="gt_row gt_right gt_striped">0.7339661</td></tr>
+    <tr><th id="stub_1_5" scope="row" class="gt_row gt_left gt_stub">Sea Ltd. (Singapore)</th>
+<td headers="stub_1_5 momentum" class="gt_row gt_right">0.36330609</td>
+<td headers="stub_1_5 last_close_trr_1yr" class="gt_row gt_right">-40.94030</td>
+<td headers="stub_1_5 last_close_trr_1mo" class="gt_row gt_right">1.0727970</td></tr>
+    <tr><th id="stub_1_6" scope="row" class="gt_row gt_left gt_stub">St. James'S Place Plc</th>
+<td headers="stub_1_6 momentum" class="gt_row gt_right gt_striped">0.45413261</td>
+<td headers="stub_1_6 last_close_trr_1yr" class="gt_row gt_right gt_striped">-41.97922</td>
+<td headers="stub_1_6 last_close_trr_1mo" class="gt_row gt_right gt_striped">-1.4977970</td></tr>
+    <tr><th id="stub_1_7" scope="row" class="gt_row gt_left gt_stub">IGO LTD</th>
+<td headers="stub_1_7 momentum" class="gt_row gt_right">0.54495913</td>
+<td headers="stub_1_7 last_close_trr_1yr" class="gt_row gt_right">-50.27935</td>
+<td headers="stub_1_7 last_close_trr_1mo" class="gt_row gt_right">-16.8151500</td></tr>
+    <tr><th id="stub_1_8" scope="row" class="gt_row gt_left gt_stub">Siemens Energy AG</th>
+<td headers="stub_1_8 momentum" class="gt_row gt_right gt_striped">0.63578565</td>
+<td headers="stub_1_8 last_close_trr_1yr" class="gt_row gt_right gt_striped">-27.61551</td>
+<td headers="stub_1_8 last_close_trr_1mo" class="gt_row gt_right gt_striped">20.3532000</td></tr>
+    <tr><th id="stub_1_9" scope="row" class="gt_row gt_left gt_stub">Bayer Ag</th>
+<td headers="stub_1_9 momentum" class="gt_row gt_right">0.72661217</td>
+<td headers="stub_1_9 last_close_trr_1yr" class="gt_row gt_right">-40.17156</td>
+<td headers="stub_1_9 last_close_trr_1mo" class="gt_row gt_right">-1.3920760</td></tr>
+    <tr><th id="stub_1_10" scope="row" class="gt_row gt_left gt_stub">HelloFresh SE</th>
+<td headers="stub_1_10 momentum" class="gt_row gt_right gt_striped">0.81743869</td>
+<td headers="stub_1_10 last_close_trr_1yr" class="gt_row gt_right gt_striped">-42.11207</td>
+<td headers="stub_1_10 last_close_trr_1mo" class="gt_row gt_right gt_striped">-5.8864750</td></tr>
+  </tbody>
+  
+  
+</table>
 </div>
 </div>
 </div>
@@ -1121,7 +3695,7 @@ M = \frac{P_{t-1}}{P_{t-12}} = \frac{P_{t-1}}{P_{t}} \times \frac{P_{t}}{P_{t-12
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1363,9 +3937,23 @@ M = \frac{P_{t-1}}{P_{t-12}} = \frac{P_{t-1}}{P_{t}} \times \frac{P_{t}}{P_{t-12
       tabsets.forEach(function(tabset) {
         const tabby = new Tabby('#' + tabset.id);
       });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
       const clipboard = new window.ClipboardJS('.code-copy-button', {
-        target: function(trigger) {
-          return trigger.previousElementSibling;
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
         }
       });
       clipboard.on('success', function(e) {
@@ -1413,7 +4001,7 @@ M = \frac{P_{t-1}}{P_{t-12}} = \frac{P_{t-1}}{P_{t}} \times \frac{P_{t}}{P_{t-12
           },
           interactive: true,
           interactiveBorder: 10,
-          theme: 'quarto-reveal',
+          theme: 'light-border',
           placement: 'bottom-start'
         };
           config['offset'] = [0,0];
