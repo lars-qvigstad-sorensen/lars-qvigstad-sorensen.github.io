@@ -3,7 +3,7 @@ title: "Betting on war? Oil prices, stock returns, and extreme geopolitical even
 collection: publications
 permalink: /publication/2024-betting-on-war
 excerpt: 'This paper investigates the predictability of stock market returns by lagged oil price changes.'
-date: 2024-08
+date: 2024-08-01
 venue: 'Energy Economics'
 paperurl: 'https://doi.org/10.1016/j.eneco.2024.107659'
 citation: 'Knut Nygaard and Lars Qvigstad Sørensen. &quot;Betting on war? Oil prices, stock returns, and extreme geopolitical events&quot; <i>Energy Economics</i>. Volume 136, 2024, 107659.'
