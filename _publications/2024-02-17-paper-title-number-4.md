@@ -1,12 +1,12 @@
 ---
-title: "Paper Title Number 4"
+title: "Betting on war? Oil prices, stock returns, and extreme geopolitical events"
 collection: publications
-permalink: /publication/2024-02-17-paper-title-number-4
-excerpt: 'This paper is about fixing template issue #693.'
-date: 2024-02-17
-venue: 'GitHub Journal of Bugs'
-paperurl: 'http://academicpages.github.io/files/paper3.pdf'
-citation: 'Your Name, You. (2024). &quot;Paper Title Number 3.&quot; <i>GitHub Journal of Bugs</i>. 1(3).'
+permalink: /publication/2024-betting-on-war
+excerpt: 'This paper investigates the predictability of stock market returns by lagged oil price changes.'
+date: 2024-06-08
+venue: 'Energy Economics'
+paperurl: 'https://doi.org/10.1016/j.eneco.2024.107659'
+citation: 'Lars Qvigstad Sørensen, Knut Nygaard. (2024). &quot;Betting on war? Oil prices, stock returns, and extreme geopolitical events Number 136.&quot; <i>Energy Economics</i>. 1(3).'
 ---
 
-The contents above will be part of a list of publications, if the user clicks the link for the publication than the contents of section will be rendered as a full page, allowing you to provide more information about the paper for the reader. When publications are displayed as a single page, the contents of the above "citation" field will automatically be included below this section in a smaller font.
+We show that the ability of oil price changes to predict stock returns is limited to periods of extreme geopolitical unrest. Four events generate most of the predictability: the 1973 Arab-Israel war, the 1986 OPEC collapse, the 1990/91 Persian gulf war, and the 2003 invasion of Iraq. We also find that a market-timing trading strategy based on oil price changes typically generates insignificant abnormal returns, contradicting previously published results. Our findings serve as an example of how a significant predictor in a time series forecasting regression may not be a useful or profitable market-timing signal.
