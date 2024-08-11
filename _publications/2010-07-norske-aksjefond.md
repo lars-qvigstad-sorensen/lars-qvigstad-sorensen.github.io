@@ -2,7 +2,7 @@
 title: "Norske aksjefonds prestasjoner"
 collection: publications
 permalink: /publication/2010-07-norske-aksjefond
-excerpt: 'Denne artikkelen analyserer norske aksjefonds risikojusterte avkastning i perioden 1982 til 2008.<br />A more comprehensive working paper version is available for download [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1488745).'
+excerpt: 'This paper analyzes the risk-adjusted performance of Norwegian equity mutual funds in the period from 1982 to 2008.<br /><br />A more comprehensive working paper version is available for download [here](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1488745).'
 date: 2010-07-02
 venue: 'Praktisk økonomi & finans'
 paperurl: 'https://doi.org/10.18261/ISSN1504-2871-2010-02-10'
