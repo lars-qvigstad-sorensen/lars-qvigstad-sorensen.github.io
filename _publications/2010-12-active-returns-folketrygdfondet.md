@@ -1,9 +1,9 @@
 ---
-title: 'Report on Active Management of the Norwegian Government Pension Fund – Norway'
+title: "Report on Active Management of the Norwegian Government Pension Fund – Norway"
 collection: publications
 permalink: /publication/2010-12-active-returns-folketrygdfondet
-excerpt: 'This paper is examines the active management of the Norwegian Government Pension Fund – Norway
-date: 2010-12-31'
+excerpt: 'This paper is examines the active management of the Norwegian Government Pension Fund – Norway'
+date: 2010-12-31
 venue: ' Commissioned by the Norwegian Ministry of Finance'
 paperurl: 'https://www.regjeringen.no/globalassets/upload/fin/statens-pensjonsfond/eksterne-rapporter-og-brev/2011/msci_sorensennagy_activemng_spn_dec2010.pdf'
 citation: 'Lars Qvigstad Sørensen and Zoltán Nagy (2010). &quot;Report on Active Management of the Norwegian Government Pension Fund – Norway&quot; <i>Commissioned by the Norwegian Ministry of Finance</i>'
