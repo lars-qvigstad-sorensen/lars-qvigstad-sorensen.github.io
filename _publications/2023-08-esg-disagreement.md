@@ -2,7 +2,7 @@
 title: "Portfolio Choice with ESG Disagreement: Customizing Sustainability through Direct Indexing"
 collection: publications
 permalink: /publication/2023-08-esg-disagreement
-excerpt: 'This paper is examines the effect of ESG disagreement on portfolio choice.'
+excerpt: 'This paper examines the effect of ESG disagreement on portfolio choice.'
 date: 2023-08-31
 venue: 'The Journal of Beta Investment Strategies'
 paperurl: 'https://www.pm-research.com/content/iijindinv/14/3/132'
