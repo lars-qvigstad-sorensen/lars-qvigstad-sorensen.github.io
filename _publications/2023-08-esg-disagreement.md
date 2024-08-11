@@ -1,5 +1,5 @@
 ---
-title: "Paper Title Number 3"
+title: "Portfolio Choice with ESG Disagreement: Customizing Sustainability through Direct Indexing"
 collection: publications
 permalink: /publication/2023-08-esg-disagreement
 excerpt: 'This paper is examines the effect of ESG disagreement on portfolio choice.'
