@@ -11,9 +11,12 @@ redirect_from:
 
 Education
 ======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+* Ph.D. in Finance, Norwegian School of Economics, 2010
+  * Thesis title: Essays in Asset Pricing 
+* Visiting Scholar, University of California at Berkeley, Haas School of Business, 2007
+* M.S. in Financial Engineering, Columbia University, 2004
+* Siviløkonom, Norwegian School of Economics, 2000
+  * Exchange student, Università Commerciale Luigi Bocconi, 1999 
 
 Work experience
 ======
