@@ -11,7 +11,7 @@ redirect_from:
 
 Education
 ======
-* **Ph.D. in Finance**, *Norwegian School of Economics*, 2010
+* <span style="color:blue">**Ph.D. in Finance**, *Norwegian School of Economics*, 2010</span>
   * Thesis title: Essays in Asset Pricing 
 * **Visiting Scholar**, *University of California at Berkeley, Haas School of Business*, 2007
 * **M.S. in Financial Engineering**, *Columbia University*, 2004
