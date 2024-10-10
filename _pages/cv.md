@@ -11,14 +11,14 @@ redirect_from:
 
 Education
 ======
-* Ph.D. in Finance, Norwegian School of Economics, 2010
+* **Ph.D. in Finance**, *Norwegian School of Economics*, 2010
   * Thesis title: Essays in Asset Pricing 
-* Visiting Scholar, University of California at Berkeley, Haas School of Business, 2007
-* M.S. in Financial Engineering, Columbia University, 2004
-* Siviløkonom, Norwegian School of Economics, 2000
+* **Visiting Scholar**, *University of California at Berkeley, Haas School of Business*, 2007
+* **M.S. in Financial Engineering**, *Columbia University*, 2004
+* **Siviløkonom**, *Norwegian School of Economics*, 2000
   * Exchange student, Università Commerciale Luigi Bocconi, 1999 
-* Foundation Subject in Art History (grunnkurs i kunsthistorie), University of Oslo, Fall 1998
-* Courses in Mathematics, University of Oslo, Fall 1998
+* **Foundation Subject in Art History (grunnkurs i kunsthistorie)**, *University of Oslo*, Fall 1998
+* **Courses in Mathematics**, *University of Oslo*, Fall 1998
 
 Work experience
 ======
