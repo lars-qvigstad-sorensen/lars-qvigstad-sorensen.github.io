@@ -2,7 +2,7 @@
 title: "Fixed Income Performance Attribution"
 collection: publications
 permalink: /publication/2010-05-fi_attribution_rmg
-excerpt: 'This paper is examines the effect of ESG disagreement on portfolio choice.'
+excerpt: 'This white paper details the RiskMetrics Group approach to fixed income attribution.'
 date: 2010-05-01
 venue: 'RiskMetrics Group'
 paperurl: 'https://lars-qvigstad-sorensen.github.io/files/Fixed_Income_Performance_Attribution_RiskMetrics_Group_2010.pdf'
